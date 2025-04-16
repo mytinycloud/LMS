@@ -3,6 +3,7 @@ class Catalogue{
         this.books = []       
     }
     addBook(book){
+        //  this adds a book from the catalogue and is given book details from the controller
         if (this.search(book.bookId)){
             return console.log(`A book with ID ${book.bookId} already exists.`);
         }else{
@@ -11,7 +12,7 @@ class Catalogue{
         }
     }
 
-    updateBook(bookId, title, author, genre, ISBN, availability, location, description) {
+    updateBook(bookId, updates){
         let book = this.search(bookId);
         if (book) {
             Object.assign(book, updates)
