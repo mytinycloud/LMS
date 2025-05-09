@@ -1,0 +1,85 @@
+/* ======= FORM CONTAINER ======= */
+.form-container {
+    background-color: var(--background-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ======= FORM HEADER ======= */
+.form-container h2 {
+    color: var(--secondary-color);
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+    gap: 10px;
+}
+
+/* ======= FORM GROUPS ======= */
+.form-group {
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    font-weight: bold;
+    color: var(--text-color);
+    display: block;
+    margin-bottom: 6px;
+    gap: 10px;
+}
+
+/* ======= INPUT FIELDS ======= */
+input[type="text"], textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* ======= GENRE DROPDOWN ======= */
+.dropdown {
+    position: absolute;
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    width: calc(100% - 20px);
+    max-height: 150px;
+    overflow-y: auto;
+    display: none;
+    border-radius: 5px;
+}
+
+.option {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background-color: var(--soft-background);
+}
+
+/* ======= SUBMIT BUTTON ======= */
+button {
+    width: 100%;
+    background-color: var(--primary-color);
+    color: var(--light-text-color);
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: var(--hover-color);
+}

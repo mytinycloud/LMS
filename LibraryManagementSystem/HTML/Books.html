@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="../css/Global.css">
+    <link rel="stylesheet" href="../css/books.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Library Management System</h1>
+            <h2>Book Management</h2>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="catalogue.html">Catalogue</a></li>
+                <li><a href="users.html">User Management</a></li>
+                <li><a href="Books.html">Book Management</a></li>
+                <li><a href="borrowing.html">Borrowing</a></li>
+                <li><a href="notifications.html">Notifications</a></li>
+            </ul>
+        </nav>
+
+        <div class="form-container" id="books">
+            <h2>Add New Book</h2>
+            <form>
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" required>
+                </div>
+                <div class="form-group">
+                    <label for="author">Author</label>
+                    <input type="text" id="author" name="author" required>
+                </div>
+                <div class="form-group">
+                    <label for="isbn">ISBN</label>
+                    <input type="text" id="isbn" name="isbn" required>
+                </div>
+                <div class="form-group">
+                    <label for="genre">Genre</label>
+                    <input type="text" id="genre-input" name="genre" placeholder="Type or select a genre">
+                    <div id="genre-dropdown" class="dropdown">
+                        <div class="option">Fantasy</div>
+                        <div class="option">Science Fiction</div>
+                        <div class="option">Horror</div>
+                        <div class="option">Mystery</div>
+                        <div class="option">Biography</div>
+                        <div class="option">History</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description" rows="4"></textarea>
+                </div>
+                <button type="submit">Add Book</button>
+            </form>
+        </div>
+
+        <footer>
+            <p> 2025 BCDE102 James Hart</p>
+        </footer>
+    </div>
+    <script type="module" src="../js/CatalogueController.js"></script>
+    <script type="module" src="../js/CatalogueView.js"></script>
+    <script>
+        // Simple script to highlight the current page in navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(link => {
+                const linkHref = link.getAttribute('href');
+                if (linkHref === currentPage || 
+                    (currentPage === '' && linkHref === 'books.html')) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+        const genreInput = document.getElementById("genre-input");
+        const genreDropdown = document.getElementById("genre-dropdown");
+
+        // Show dropdown on focus
+        genreInput.addEventListener("focus", () => {
+            genreDropdown.style.display = "block";
+        });
+
+        // Hide dropdown when clicking outside
+        document.addEventListener("click", (event) => {
+            if (event.target !== genreInput && !genreDropdown.contains(event.target)) {
+                genreDropdown.style.display = "none";
+            }
+        });
+
+        // Select genre from dropdown
+        genreDropdown.addEventListener("click", (event) => {
+            if (event.target.classList.contains("option")) {
+                genreInput.value = event.target.textContent;
+                genreDropdown.style.display = "none";
+            }
+        });
+    });
+    </script>
+    
+    
+</body>
+</html>

@@ -69,5 +69,3 @@ class Libraian extends User {
         
     }
 }
-
-export{User, Member, Libraian};

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="../css/Global.css">
+    <link rel="stylesheet" href="../css/home.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Library Management System</h1>
+            <h2>Home</h2>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="catalogue.html">Catalogue</a></li>
+                <li><a href="users.html">User Management</a></li>
+                <li><a href="Books.html">Book Management</a></li>
+                <li><a href="borrowing.html">Borrowing</a></li>
+                <li><a href="notifications.html">Notifications</a></li>
+            </ul>
+        </nav>
+
+        <div class="welcome-section">
+            <h2>Welcome to the Library Management System</h2>
+            <p>This system provides a comprehensive solution for managing a library's resources, users, and operations.</p>
+            <p>Use the navigation above to access different sections of the system.</p>
+            
+            <div class="overview">
+                <div class="stat-box">
+                    <h3>Total Books</h3>
+                    <p>3,542</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Active Members</h3>
+                    <p>752</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Books Borrowed</h3>
+                    <p>284</p>
+                </div>
+                <div class="stat-box">
+                    <h3>Overdue Books</h3>
+                    <p>27</p>
+                </div>
+            </div>
+        </div>
+
+        <h2 style="margin-bottom: 20px; color: #2c3e50;">Quick Actions</h2>
+        <div class="quick-links">
+            <a href="books.html" class="quick-link">Add New Book</a>
+            <a href="users.html" class="quick-link">Register User</a>
+            <a href="borrowing.html" class="quick-link">Manage Borrowing</a>
+            <a href="catalogue.html" class="quick-link">Search Catalogue</a>
+        </div>
+
+        <footer>
+            <p> 2025 BCDE102 James Hart</p>
+        </footer>
+    </div>
+
+    <script>
+        // Simple script to highlight the current page in navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPage = window.location.pathname.split('/').pop();
+            const navLinks = document.querySelectorAll('nav a');
+            
+            navLinks.forEach(link => {
+                const linkHref = link.getAttribute('href');
+                if (linkHref === currentPage || 
+                    (currentPage === '' && linkHref === 'index.html')) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
