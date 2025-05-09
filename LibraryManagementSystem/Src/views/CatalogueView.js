@@ -14,8 +14,8 @@ function populateCatalogue(books) {
             <td>${book.isAvailable ? "Available" : "Borrowed"}</td>
             <td>${book.location}</td>
             <td><button onclick="showDetails('${book.bookId}')">Details</button></td>
-            <button style="background-color: #2ecc71; padding: 5px 10px; margin-right: 5px;">Edit</button>
-            <button style="background-color: #e74c3c; padding: 5px 10px;">Delete</button>
+            <td><button>Edit</button></td>
+            <td><button>Delete</button></td>
         `;
         tbody.appendChild(row);
     });

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library Management System</title>
     <link rel="stylesheet" href="../css/Global.css">
-    <link rel="stylesheet" href="../css/catalouge.css">
+    <link rel="stylesheet" href="../css/catalogue.css">
 </head>
 <body>
     <div class="container">
@@ -54,24 +54,9 @@
             <p> 2025 BCDE102 James Hart</p>
         </footer>
     </div>
-    <script type="module" src="../js/CatalogueController.js"></script>
-    <script type="module" src="../js/CatalogueView.js"></script>
-    <script>
-        // Simple script to highlight the current page in navigation
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentPage = window.location.pathname.split('/').pop();
-            const navLinks = document.querySelectorAll('nav a');
-            
-            navLinks.forEach(link => {
-                const linkHref = link.getAttribute('href');
-                if (linkHref === currentPage || 
-                    (currentPage === '' && linkHref === 'catalogue.html')) {
-                    link.classList.add('active');
-                }
-            });
-        });
-    </script>
-    
+    <script type="module" src="../Src/controllers/CatalogueController.js"></script>
+    <script type="module" src="../Src/views/CatalogueView.js"></script>
+    <script type="module" src="../Src/models/Catalogue.js "></script>
     
 </body>
 </html>

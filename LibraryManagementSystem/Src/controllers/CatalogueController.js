@@ -1,5 +1,5 @@
 // catalougeController is responsible for input and updates of the model and view
-class CatalougeController { 
+class CatalogueController { 
     constructor(model, view) {
         this.model = model
         this.view = view;
@@ -37,7 +37,7 @@ class CatalougeController {
     handleSearch() {
         const query = this.searchInput.value;
         const filteredBooks = this.model.searchBooks(query);
-        this.view.updateBookTable(filteredBooks);
+        this.view.populateCatalogue(filteredBooks);
         this.addRemoveButtonListeners();
     }
 
