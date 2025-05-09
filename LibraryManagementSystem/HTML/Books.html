@@ -25,7 +25,7 @@
             </ul>
         </nav>
 
-        <div class="form-container" id="books">
+        <div class="form-container" id="book-form">
             <h2>Add New Book</h2>
             <form>
                 <div class="form-group">
@@ -37,24 +37,17 @@
                     <input type="text" id="author" name="author" required>
                 </div>
                 <div class="form-group">
-                    <label for="isbn">ISBN</label>
-                    <input type="text" id="isbn" name="isbn" required>
+                    <label for="genre">Genre</label>
+                    <input type="text" id="genre" name="genre" required>
                 </div>
                 <div class="form-group">
-                    <label for="genre">Genre</label>
-                    <input type="text" id="genre-input" name="genre" placeholder="Type or select a genre">
-                    <div id="genre-dropdown" class="dropdown">
-                        <div class="option">Fantasy</div>
-                        <div class="option">Science Fiction</div>
-                        <div class="option">Horror</div>
-                        <div class="option">Mystery</div>
-                        <div class="option">Biography</div>
-                        <div class="option">History</div>
-                    </div>
+                    <label for="ISBN">ISBN</label>
+                    <input type="text" id="ISBN" name="ISBN" required>
                 </div>
+                
                 <div class="form-group">
                     <label for="location">Location</label>
-                    <input type="text" id="location" name="location">
+                    <input type="text" id="location" name="location" required>
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
@@ -68,50 +61,8 @@
             <p> 2025 BCDE102 James Hart</p>
         </footer>
     </div>
-    <script type="module" src="../js/CatalogueController.js"></script>
-    <script type="module" src="../js/CatalogueView.js"></script>
-    <script>
-        // Simple script to highlight the current page in navigation
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentPage = window.location.pathname.split('/').pop();
-            const navLinks = document.querySelectorAll('nav a');
-            
-            navLinks.forEach(link => {
-                const linkHref = link.getAttribute('href');
-                if (linkHref === currentPage || 
-                    (currentPage === '' && linkHref === 'books.html')) {
-                    link.classList.add('active');
-                }
-            });
-        });
-    </script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-        const genreInput = document.getElementById("genre-input");
-        const genreDropdown = document.getElementById("genre-dropdown");
-
-        // Show dropdown on focus
-        genreInput.addEventListener("focus", () => {
-            genreDropdown.style.display = "block";
-        });
-
-        // Hide dropdown when clicking outside
-        document.addEventListener("click", (event) => {
-            if (event.target !== genreInput && !genreDropdown.contains(event.target)) {
-                genreDropdown.style.display = "none";
-            }
-        });
-
-        // Select genre from dropdown
-        genreDropdown.addEventListener("click", (event) => {
-            if (event.target.classList.contains("option")) {
-                genreInput.value = event.target.textContent;
-                genreDropdown.style.display = "none";
-            }
-        });
-    });
-    </script>
-    
-    
+    <script type="module" src="../Src/models/Catalogue.js"></script>
+    <script type="module" src="../Src/controllers/CatalogueController.js"></script>
+    <script type="module" src="../Src/views/CatalogueView.js"></script>
 </body>
 </html>

@@ -1,28 +1,30 @@
-import catalogueController from "./CatalogueController.js";  // Import the controller
+class LibraryView {
+    constructor() {
+        this.bookTableBody = document.querySelector('#book-table tbody');
+    }
 
-function populateCatalogue(books) {
-    const tbody = document.getElementById("catalogue-body");
-    tbody.innerHTML = ""; // Clear previous entries
-
-    books.forEach(book => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${book.title}</td>
-            <td>${book.author}</td>
-            <td>${book.genre}</td>
-            <td>${book.ISBN}</td>
-            <td>${book.isAvailable ? "Available" : "Borrowed"}</td>
-            <td>${book.location}</td>
-            <td><button onclick="showDetails('${book.bookId}')">Details</button></td>
-            <td><button>Edit</button></td>
-            <td><button>Delete</button></td>
-        `;
-        tbody.appendChild(row);
-    });
+    updateBookTable(books) {
+        this.bookTableBody.innerHTML = '';
+        
+        books.forEach(book => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${book.getBookId}</td>
+                <td>${book.getTitle}</td>
+                <td>${book.getAuthor}</td>
+                <td>${book.getGenre}</td>
+                <td>${book.getisbn}</td>
+                <td>${book.getAvailability ? "Available" : "Borrowed"}</td>
+                <td>${book.getLocation}</td>    
+                <td>
+                    <button class="edit-btn" edit-data-book-id="${book.getBookId()}">Edit</button>
+                    <button class="remove-btn" remove-data-book-id="${book.getBookId()}">Delete</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+    clearForm() {
+        document.getElementById('books').reset();
+    }
 }
-
-// Call function when catalogue loads
-document.addEventListener("DOMContentLoaded", function() {
-    const books = catalogueController.getAllBooks();  // Fetch books
-    populateCatalogue(books); // Update UI
-});

@@ -1,4 +1,4 @@
-class Book{
+export default class Book{
     // Private properties to encapsulate the book objects
     #bookId;
     #title;
@@ -66,3 +66,4 @@ class Book{
     `;
     }
 }
+
