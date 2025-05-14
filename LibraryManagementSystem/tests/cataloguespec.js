@@ -1,6 +1,3 @@
-import Book from '..Src/models/Book.js';
-import CatalogueModel from '../Src/models/CatalogueModel.js';
-
 describe("catalogueModel Class", () => {
     let catalogueModel, book1, book2;
 
@@ -51,8 +48,8 @@ describe("catalogueModel Class", () => {
     });
     it("should load books from localStorage", () => {
         const initialBooks = [
-            { bookId: 1, title: "JavaScript: The Good Parts", author: "Douglas Crockford", genre: "coding", ISBN: "9780596517748", availability: true, location: "some location", description: "some description" },
-            { bookId: 2, title: "Eloquent JavaScript", author: "Marijn Haverbeke", genre: "somegenre", ISBN: "9781593279509", availability: true, location: "some location", description: "some description" }
+            { title: "JavaScript: The Good Parts", author: "Douglas Crockford", genre: "coding", ISBN: "9780596517748", availability: true, location: "some location", description: "some description" },
+            { title: "Eloquent JavaScript", author: "Marijn Haverbeke", genre: "somegenre", ISBN: "9781593279509", availability: true, location: "some location", description: "some description" }
         ];
         localStorage.setItem('library_books', JSON.stringify(initialBooks));
         catalogueModel = new CatalogueModel();

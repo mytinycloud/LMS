@@ -1,7 +1,3 @@
-import { BorrowingRecord } from "../models/BorrowingRecord";
-import { member } from "../models/Member";
-import { book } from "../models/Book";
-
 class BorrowingRecordController {
     constructor() {
     }
