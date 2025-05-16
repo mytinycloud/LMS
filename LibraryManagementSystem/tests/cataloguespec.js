@@ -59,8 +59,8 @@ describe("Library Management System", () => {
             book1 = new Book(1, "JavaScript: The Good Parts", "Douglas Crockford", "instructional", "9780596517748", "Library", "A book about JavaScript best practices.");
             book2 = new Book(2, "Eloquent JavaScript", "Marijn Haverbeke", "instructional", "9781593279509", "Programming", "A modern introduction to programming.");
         });
-
-        it("should add books to the library model", () => {
+        
+        it("should add books to the library model.", () => {
             model.addBook(book1);
             model.addBook(book2);
 
@@ -69,7 +69,7 @@ describe("Library Management System", () => {
             expect(model.books[1].title).toBe("Eloquent JavaScript");
         });
 
-        it("should edit a book in the library model", () => {
+        it("should edit a book in the library model.", () => {
             model.addBook(book1);
             const updatedBook = new Book(1, "JavaScript: The Good Parts", "Douglas Crockford", "instructional", "9780596517748", "Library", "Updated description.");
             model.editBook(book1.bookId, updatedBook);
@@ -77,7 +77,7 @@ describe("Library Management System", () => {
             expect(model.books[0].description).toBe("Updated description.");
         });
 
-        it("should remove a book from the library model", () => {
+        it("should remove a book from the library model.", () => {
             model.addBook(book1);
             model.addBook(book2);
             
@@ -87,7 +87,7 @@ describe("Library Management System", () => {
             expect(model.books[0].bookId).toBe(2);
         });
 
-        it("should search books by title or author", () => {
+        it("should search books by title or author.", () => {
             model.addBook(book1);
             model.addBook(book2);
 

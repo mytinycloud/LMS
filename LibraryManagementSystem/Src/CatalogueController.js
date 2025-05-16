@@ -1,3 +1,5 @@
+User = ""
+
 // Initialize the MVC components
 document.addEventListener('DOMContentLoaded', () => {
     const model = new CatalogueModel();
@@ -10,15 +12,11 @@ class CatalogueController {
     this.model = model;
     this.view = view;
 
-    // DOM Elements
-    this.searchInput = document.getElementById('search');
-    this.searchButton = document.getElementById('search-button');
-
     // Bind event listeners to the correct form IDs
     document.getElementById('add-book-form').addEventListener('submit', this.handleAddBook.bind(this));
     document.getElementById('edit-book-form').addEventListener('submit', this.handleEditBook.bind(this));
-    this.searchInput.addEventListener('input', this.handleSearch.bind(this));
-    this.searchButton.addEventListener('click', this.handleSearchButton.bind(this));
+    document.getElementById('search').addEventListener('input', this.handleSearch.bind(this));
+    document.getElementById('search-button').addEventListener('click', this.handleSearchButton.bind(this));
 
     this.view.updateBookTable(this.model.getBooks());  // Initial render
     this.addEventListenersToButtons();  // Add event listeners to buttons
@@ -34,10 +32,11 @@ class CatalogueController {
     const author = addForm.querySelector('input[name="author"]').value;
     const genre = addForm.querySelector('input[name="genre"]').value;
     const ISBN = addForm.querySelector('input[name="ISBN"]').value;
+    const availability = true
     const location = addForm.querySelector('input[name="location"]').value;
     const description = addForm.querySelector('textarea[name="description"]').value || '';
 
-    const newBook = new Book(bookId, title, author, genre, ISBN, location, description);
+    const newBook = new Book(bookId, title, author, genre, ISBN, availability, location, description);
     
     this.model.addBook(newBook);  // Add to model
     
@@ -51,7 +50,7 @@ class CatalogueController {
     handleEditBook(event) {
         event.preventDefault();
         console.log('handleeditbook callled ')
-        const editForm = document.getElementById('edit-Book-form');
+        const editForm = document.getElementById('edit-book-form');
         const bookId = editForm.getAttribute('data-editing-id');
         console.log("bookid: ", bookId)
         
@@ -59,16 +58,15 @@ class CatalogueController {
         const author = editForm.querySelector('input[name="author"]').value;
         const genre = editForm.querySelector('input[name="genre"]').value;
         const ISBN = editForm.querySelector('input[name="ISBN"]').value;
-        const availability = editForm.querySelector('select[name="availability"]').value;
+        const availability = editForm.querySelector('select[name="availability"]').value === "available"; 
         const location = editForm.querySelector('input[name="location"]').value;
         const description = editForm.querySelector('textarea[name="description"]').value || '';
 
         const updatedBook = new Book(bookId, title, author, genre, ISBN, availability, location, description);  // update book for model
  
-        this.model.EditBook(bookId, updatedBook);  // Send updated book to model
+        this.model.editBook(bookId, updatedBook);  // Send updated book to model
 
         // Update view
-        this.view.clearForm('edit-book-form');
         this.view.hideForm('edit-book-form');
         this.view.updateBookTable(this.model.getBooks());
         this.addEventListenersToButtons();  // Re-add event listeners as the table has been refreshed
@@ -92,7 +90,7 @@ class CatalogueController {
         
         const query = this.searchInput.value.toLowerCase().trim();
         
-        if (query === '') {  // If search is empty, show all books
+        if (query === '') {
             this.view.updateBookTable(this.model.getBooks());
         } else {
             const filteredBooks = this.model.searchBook(query);  
@@ -110,18 +108,51 @@ class CatalogueController {
             });
         });
         
-        // Add listeners to edit buttons
-        const editButtons = document.querySelectorAll('.edit-btn');
+        const editButtons = document.querySelectorAll('.edit-btn'); // Link edit button 
         editButtons.forEach(button => {
             button.addEventListener('click', (event) => {
-            const bookId = event.target.getAttribute('data-book-id');
-            document.getElementById('edit-book-form').setAttribute('data-editing-id', bookId);
-            const books = this.model.searchBook(bookId)
-            const book = books[0]
-            this.view.showForm('edit-book-form');  // Show the form
-            this.view.setplaceholder(book); 
-            console.log("book = ", book)
+                const bookId = event.currentTarget.getAttribute('data-book-id');  // Gets bookId of the book linked to the edit button 
+                console.log (bookId)
+
+                // gets the rest of the book details to send to view.setplaceholder 
+                const books = this.model.searchBook(bookId);
+                const book = books[0];
+
+                this.view.showForm('edit-book-form'); // show  the form 
+
+                const form = document.getElementById('edit-book-form');
+                form.setAttribute('data-editing-id', bookId);
+                this.view.setplaceholder(book, 'edit-book-form');
             });
         });
+
+        const viewButtons = document.querySelectorAll('.view-btn'); // Link edit button 
+        viewButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                const bookId = event.currentTarget.getAttribute('data-book-id');  // Gets bookId of the book linked to the edit button 
+                console.log (bookId)
+
+                // gets the rest of the book details to send to view.setplaceholder 
+                const books = this.model.searchBook(bookId);
+                const book = books[0];
+
+                this.view.showForm('view-book-form'); // show  the form 
+
+                const form = document.getElementById('view-book-form');
+                form.setAttribute('data-editing-id', bookId);
+                this.view.setplaceholder(book, 'view-book-form');
+            });
+        });
+
+        const borrowButtons = document.querySelectorAll('.borrow-btn'); // Link edit button 
+        borrowButtons.forEach(button => {
+            button.addEventListener('click', (event) => { 
+                const bookId = event.currentTarget.getAttribute('data-book-id');  // Gets bookId of the book linked to the edit button 
+                console.log (bookId)
+
+
+            });
+        });
+
     }
 }

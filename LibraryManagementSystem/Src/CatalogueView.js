@@ -21,37 +21,30 @@ class CatalogueView {
         }
     }
     
-    setplaceholder(book) {
-        console.log("Populating fields with book: ", book);
-
+    setplaceholder(book, modalId) {
         if (!book) {
         console.error("Book data not found in setplaceholder.");
         return; // Exit early to prevent errors
 }
-        const editForm = document.getElementById('edit-book-form')
-
-        const titleField = editForm.querySelector('input[name="title"]');
-        const authorField = editForm.querySelector('input[name="author"]');
-        const genreField = editForm.querySelector('input[name="genre"]');
-        const isbnField = editForm.querySelector('input[name="ISBN"]');
-        const availabilityField = editForm.querySelector('select[name="availability"]');
-
-        const locationField = editForm.querySelector('input[name="location"]');
-        const descriptionField = editForm.querySelector('textarea[name="description"]');
-        
-        console.log("Title field in edit form:", titleField);
+        const form = document.getElementById(modalId)
+        const bookIdField = form.querySelector('input[name="bookId"]');
+        const titleField = form.querySelector('input[name="title"]');
+        const authorField = form.querySelector('input[name="author"]');
+        const genreField = form.querySelector('input[name="genre"]');
+        const isbnField = form.querySelector('input[name="ISBN"]');
+        const availabilityField = form.querySelector('select[name="availability"]');
+        const availabilityTextField = form.querySelector('#view-availability');
+        const locationField = form.querySelector('input[name="location"]');
+        const descriptionField = form.querySelector('textarea[name="description"]');
         
         // Set values if fields exist
-        if (titleField) {
-            console.log("Title before setting:", titleField.value);
-            titleField.value = book.title || "";
-            console.log("Title after setting:", titleField.value);
-        }
-        
+        if (bookIdField) bookIdField.value = book.bookId
+        if (titleField) titleField.value = book.title || "";
         if (authorField) authorField.value = book.author;
         if (genreField) genreField.value = book.genre;
         if (isbnField) isbnField.value = book.ISBN;
-        if (availabilityField) availabilityField.value ? true : false;
+        if (availabilityField) availabilityField.value ? "Available" : "Not Available";
+        if (availabilityTextField) availabilityTextField.value ? "Available" : "Not Available";
         if (locationField) locationField.value = book.location || "";
         if (descriptionField) descriptionField.value = book.description || "";
     }

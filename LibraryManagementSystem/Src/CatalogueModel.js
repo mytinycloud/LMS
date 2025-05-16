@@ -30,6 +30,7 @@ class CatalogueModel {
         if (book) {
             Object.assign(book, update);
             this.saveBooks()
+            console.log('tis book was saved: ', update)
             console.log(`Book with ID ${book.bookId} updated successfully.`);
         } else {
             console.log(`Book with ID ${book.bookId} not found. Could not update Book`);
@@ -51,16 +52,13 @@ class CatalogueModel {
     }
     // Filter books based on query
     searchBook(search) {
-    console.log("Search input:", search);
-    console.log("Books array:", this.books);
-
-    return this.books.filter(book => 
-        (!isNaN(search) && Number(book.bookId) === Number(search)) ||
-        book.title.includes(search) ||
-        book.author.includes(search) ||
-        book.ISBN.includes(search) ||
-        book.genre.includes(search)
-    );
+        return this.books.filter(book => 
+            (!isNaN(search) && Number(book.bookId) === Number(search)) ||
+            book.title.includes(search) ||
+            book.author.includes(search) ||
+            book.ISBN.includes(search) ||
+            book.genre.includes(search)
+        );
 }
 
     getBooks() {
@@ -70,13 +68,13 @@ class CatalogueModel {
 }
 
 class Book{
-    constructor(bookId, title, author, genre, ISBN, location, description){
+    constructor(bookId, title, author, genre, ISBN, availability, location, description){
         this.bookId = bookId;
         this.title = title;
         this.author = author;
         this.genre = genre;
         this.ISBN = ISBN;
-        this.availability = true;
+        this.availability = availability;
         this.location = location;
         this.description = description;
     }

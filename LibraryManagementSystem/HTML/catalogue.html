@@ -99,6 +99,51 @@
             </div>
         </div>
 
+        <div id="view-book-form" class="modal">
+            <div class="modal-content" >
+                <span class="close-button" onclick="catalogueView.hideForm('view-book-form')">&times;</span>
+                <h2>Book Details</h2>
+                <form id="view-book-form">
+                    <div class="form-group">
+                        <label for="view-BookId">BookId</label>
+                        <input type="text" id="view-BookId" name="bookId" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="view-title">Title</label>
+                        <input type="text" id="view-title" name="title" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="view-author">Author</label>
+                        <input type="text" id="view-author" name="author" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="view-genre">Genre</label>
+                        <input type="text" id="view-genre" name="genre" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="view-ISBN">ISBN</label>
+                        <input type="text" id="view-ISBN" name="ISBN" disabled>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="view-availability">Availability</label>
+                        <input type="text" id="view-availability" name="availability" disabled>  
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="view-location">Location</label>
+                        <input type="text" id="view-location" name="location" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="view-description">Description</label>
+                        <textarea id="view-description" name="description" rows="4"></textarea disabled>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        
+
         <div class="form-container">
             <h2>Search Catalogue</h2>
             
