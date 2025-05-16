@@ -19,7 +19,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="catalogue.html">Catalogue</a></li>
                 <li><a href="users.html">User Management</a></li>
-                <li><a href="borrowing.html">Borrowing</a></li>
+                <li><a href="Profile.html">User Profile</a></li>
             </ul>
         </nav>
 
@@ -52,7 +52,7 @@
         <div class="quick-links">
             <a href="books.html" class="quick-link">Add New Book</a>
             <a href="users.html" class="quick-link">Register User</a>
-            <a href="borrowing.html" class="quick-link">Manage Borrowing</a>
+            <a href="Profile.html" class="quick-link">user Pofile</a>
             <a href="catalogue.html" class="quick-link">Search Catalogue</a>
         </div>
 
@@ -60,21 +60,5 @@
             <p> 2025 BCDE102 James Hart</p>
         </footer>
     </div>
-
-    <script>
-        // Simple script to highlight the current page in navigation
-        document.addEventListener('DOMContentLoaded', function() {
-            const currentPage = window.location.pathname.split('/').pop();
-            const navLinks = document.querySelectorAll('nav a');
-            
-            navLinks.forEach(link => {
-                const linkHref = link.getAttribute('href');
-                if (linkHref === currentPage || 
-                    (currentPage === '' && linkHref === 'index.html')) {
-                    link.classList.add('active');
-                }
-            });
-        });
-    </script>
 </body>
 </html>

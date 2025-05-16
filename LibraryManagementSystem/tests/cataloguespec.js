@@ -1,61 +1,110 @@
-describe("catalogueModel Class", () => {
-    let catalogueModel, book1, book2;
+describe("Library Management System", () => {
+    
+    describe("Book Class", () => {
+        let book;
 
-    // Mocking localStorage before each test
-    beforeEach(() => {
-        // Mock localStorage with an empty object
-        const localStorageMock = (() => {
-            let store = {};
-            return {
-                getItem(key) {
-                    return store[key] || null;
-                },
-                setItem(key, value) {
-                    store[key] = value.toString();
-                },
-                clear() {
-                    store = {};
-                },
-                removeItem(key) {
-                    delete store[key];
-                }
-            };
-        })();
-        Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+        beforeEach(() => {
+            book = new Book(1, "JavaScript: The Good Parts", "Douglas Crockford", "instructional", "9780596517748", "Library", "A book about JavaScript best practices.");
+        });
 
-        catalogueModel = new CatalogueModel();
-        book1 = new Book("JavaScript: The Good Parts", "Douglas Crockford", "coding", "9780596517748","some location", "some description");
-        book2 = new Book("Eloquent JavaScript", "Marijn Haverbeke", "somegenre", "9781593279509", "some location", "some description");
+        it("should create a book with bookId, title, author, genre, isbn, location, available status, and description", () => {
+            expect(book.bookId).toBe(1);
+            expect(book.title).toBe("JavaScript: The Good Parts");
+            expect(book.author).toBe("Douglas Crockford");
+            expect(book.ISBN).toBe("9780596517748");
+            expect(book.genre).toBe("instructional");
+            expect(book.availability).toBe(true);
+            expect(book.location).toBe("Library");
+            expect(book.description).toBe("A book about JavaScript best practices.");
+        });
+
+        it("should mark the book as unavailable when checked out", () => {
+            book.available = false;  // simulating checkout
+            expect(book.available).toBe(false);
+        });
+
+        it("should mark the book as available when returned", () => {
+            book.available = false;
+            book.available = true;  // simulating return
+            expect(book.available).toBe(true);
+        });
     });
 
-    it("should add books to the catalogue", () => {
-        catalogueModel.addBook(book1);
-        catalogueModel.addBook(book2);
+    describe("CatalogueModel Class", () => {
+        let model, book1, book2;
 
-        expect(catalogueModel.books.length).toBe(2);
-        expect(catalogueModel.books[0].title).toBe("JavaScript: The Good Parts");
-        expect(catalogueModel.books[1].title).toBe("Eloquent JavaScript");
-    });
+        // Mocking localStorage before each test
+        beforeEach(() => {
+            // Mock localStorage with an empty object
+            const localStorageMock = (() => {
+                let store = {};
+                return {
+                    getItem(key) {
+                        return store[key] || null;
+                    },
+                    setItem(key, value) {
+                        store[key] = value.toString();
+                    },
+                    clear() {
+                        store = {};
+                    },
+                    removeItem(key) {
+                        delete store[key];
+                    }
+                };
+            })();
+            Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
-    it("should save books to localStorage", () => {
-        catalogueModel.addBook(book1);
-        catalogueModel.addBook(book2);
+            model = new CatalogueModel();
+            book1 = new Book(1, "JavaScript: The Good Parts", "Douglas Crockford", "instructional", "9780596517748", "Library", "A book about JavaScript best practices.");
+            book2 = new Book(2, "Eloquent JavaScript", "Marijn Haverbeke", "instructional", "9781593279509", "Programming", "A modern introduction to programming.");
+        });
 
-        const savedBooks = JSON.parse(localStorage.getItem('library_books'));
-        expect(savedBooks.length).toBe(2);
-        expect(savedBooks[0].title).toBe("JavaScript: The Good Parts");
-        expect(savedBooks[1].title).toBe("Eloquent JavaScript");
-    });
-    it("should load books from localStorage", () => {
-        const initialBooks = [
-            { title: "JavaScript: The Good Parts", author: "Douglas Crockford", genre: "coding", ISBN: "9780596517748", availability: true, location: "some location", description: "some description" },
-            { title: "Eloquent JavaScript", author: "Marijn Haverbeke", genre: "somegenre", ISBN: "9781593279509", availability: true, location: "some location", description: "some description" }
-        ];
-        localStorage.setItem('library_books', JSON.stringify(initialBooks));
-        catalogueModel = new CatalogueModel();
+        it("should add books to the library model", () => {
+            model.addBook(book1);
+            model.addBook(book2);
 
-        expect(catalogueModel.books.length).toBe(2);
-        expect(catalogueModel.books[0].title).toBe("JavaScript: The Good Parts");
-        expect(catalogueModel.books[1].title).toBe("Eloquent JavaScript");
+            expect(model.books.length).toBe(2);
+            expect(model.books[0].title).toBe("JavaScript: The Good Parts");
+            expect(model.books[1].title).toBe("Eloquent JavaScript");
+        });
+
+        it("should edit a book in the library model", () => {
+            model.addBook(book1);
+            const updatedBook = new Book(1, "JavaScript: The Good Parts", "Douglas Crockford", "instructional", "9780596517748", "Library", "Updated description.");
+            model.editBook(book1.bookId, updatedBook);
+
+            expect(model.books[0].description).toBe("Updated description.");
+        });
+
+        it("should remove a book from the library model", () => {
+            model.addBook(book1);
+            model.addBook(book2);
+            
+            model.deleteBook(book1.bookId);
+
+            expect(model.books.length).toBe(1);
+            expect(model.books[0].bookId).toBe(2);
+        });
+
+        it("should search books by title or author", () => {
+            model.addBook(book1);
+            model.addBook(book2);
+
+            const search = model.searchBook("JavaScript");
+            expect(search.length).toBe(2);
+
+            const searchResultsAuthor = model.searchBook("Douglas");
+            expect(searchResultsAuthor.length).toBe(1);
+            expect(searchResultsAuthor[0].author).toBe("Douglas Crockford");
+        });
+    
+        
+    
+    
+    
+    
+    
+    
     });
 });

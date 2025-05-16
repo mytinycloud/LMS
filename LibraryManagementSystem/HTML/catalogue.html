@@ -19,33 +19,111 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="catalogue.html">Catalogue</a></li>
                 <li><a href="users.html">User Management</a></li>
-                <li><a href="notifications.html">Notifications</a></li>
+                <li><a href="Profile.html">User Profile</a></li>
             </ul>
         </nav>
+
+        <!-- Modal structure -->
+        <div id="add-book-form" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="catalogueView.hideForm('add-book-form')">&times;</span>
+                <h2>Add New Book</h2>
+                <form id="add-book-form">
+                    <div class="form-group">
+                        <label for="add-title">Title</label>
+                        <input type="text" id="add-title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-author">Author</label>
+                        <input type="text" id="add-author" name="author" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-genre">Genre</label>
+                        <input type="text" id="add-genre" name="genre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-ISBN">ISBN</label>
+                        <input type="text" id="add-ISBN" name="ISBN" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-location">Location</label>
+                        <input type="text" id="add-location" name="location" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-description">Description</label>
+                        <textarea id="add-description" name="description" rows="4"></textarea>
+                    </div>
+                    <button type="submit">Add Book</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="edit-book-form" class="modal">
+            <div class="modal-content" >
+                <span class="close-button" onclick="catalogueView.hideForm('edit-book-form')">&times;</span>
+                <h2>Edit Book</h2>
+                <form id="edit-book-form">
+                    <div class="form-group">
+                        <label for="edit-title">Title</label>
+                        <input type="text" id="edit-title" name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-author">Author</label>
+                        <input type="text" id="edit-author" name="author">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-genre">Genre</label>
+                        <input type="text" id="edit-genre" name="genre">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-ISBN">ISBN</label>
+                        <input type="text" id="edit-ISBN" name="ISBN">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-availability">Availability</label>
+                        <select id="edit-availability" name="availability" class="form-control">
+                            <option value="available">Available</option>
+                            <option value="unavailable">Unavailable</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-location">Location</label>
+                        <input type="text" id="edit-location" name="location">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-description">Description</label>
+                        <textarea id="edit-description" name="description" rows="4"></textarea>
+                    </div>
+                    <button type="submit">Edit Book</button>
+                </form>
+            </div>
+        </div>
 
         <div class="form-container">
             <h2>Search Catalogue</h2>
             
             <div class="search-container">
-                <input type="text" id="search" placeholder="Search by title, author, ISBN...">
-                <button id="search-button">Search</button>
-                <a href="Books.html"><button id="addBook-button">Add Book</button></a>
+                <div class="search-input">
+                    <input type="text" id="search" placeholder="Search by title, author, ISBN...">
+                </div>
+                <div class="button-group">
+                    <button id="search-button">Search</button>
+                    <button onclick="catalogueView.showForm('add-book-form')">Add Book</button>
+                </div>
             </div>
 
-            <table>
+            <table id="book-table">
                 <thead>
                     <tr>
                         <th>Title</th>
                         <th>Author</th>
                         <th>Genre</th>
-                        <th>ISBN</th>
                         <th>Availability</th>
-                        <th>Location</th>
-                        <th></th>
+                        <th class="actions-th">Actions</th>
                     </tr>
                 </thead>
-                <tbody id="catalogue-body">
-                    
+                <tbody>  
+                    <!-- Books -->
                 </tbody>
             </table>
             
@@ -55,9 +133,10 @@
             <p> 2025 BCDE102 James Hart</p>
         </footer>
     </div>
-    <script type="module" src="../Src/controllers/CatalogueController.js"></script>
-    <script type="module" src="../Src/views/CatalogueView.js"></script>
-    <script type="module" src="../Src/models/Catalogue.js "></script>
-    
+
+    <!-- Close the modal when clicking outside of it -->
+    <script src="../Src/CatalogueModel.js"></script> 
+    <script src="../Src/CatalogueController.js"></script>
+    <script src="../Src/CatalogueView.js"></script>
 </body>
 </html>

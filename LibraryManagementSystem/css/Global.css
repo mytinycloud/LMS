@@ -10,6 +10,8 @@
     --soft-background: #f8f9fa;
     --border-color: #ddd;
     --faint-text-color: #c7dadb;
+    --dangermouse-color: #e74c3c;
+    --success-color: #2ecc71;
 }
 
 /* ======= GLOBAL STYLES ======= */
@@ -109,47 +111,6 @@ button:hover {
     gap: 10px;
 }
 
-/* ======= FORM GROUPS ======= */
-.form-group {
-    display: grid;
-    grid-template-columns: 100px 1fr;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.form-group label {
-    font-weight: bold;
-    color: var(--text-color);
-    display: block;
-    margin-bottom: 6px;
-    gap: 10px;
-}
-
-
-/* ======= TABLE STYLING ======= */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid var(--border-color);
-}
-
-th {
-    background-color: var(--primary-color);
-    color: var(--light-text-color);
-}
-
-tr:hover {
-    background-color: var(--soft-background);
-    font-weight: bold;
-}
-
 /* ======= FOOTER ======= */
 footer {
     text-align: center;
@@ -165,13 +126,3 @@ footer p {
     line-height: 1.5;
 }
 
-/* ======= RESPONSIVE STYLES ======= */
-@media (max-width: 768px) {
-    .dashboard, .overview, .quick-links {
-        grid-template-columns: 1fr;
-    }
-
-    nav ul {
-        flex-direction: column;
-    }
-}
