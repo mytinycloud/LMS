@@ -16,9 +16,9 @@ class CatalogueModel {
     // addBook takes a book object from the controller and adds it to the books array, then saves the books to local storage.
     addBook(book) {
         if (book){
-        console.log("Adding book: ", book);
-        this.books.push(book);
-        this.saveBooks();
+            console.log("Adding book: ", book);
+            this.books.push(book);
+            this.saveBooks();
         }else{
             console.log("Book is undefined");
         }
@@ -68,7 +68,7 @@ class CatalogueModel {
 }
 
 class Book{
-    constructor(bookId, title, author, genre, ISBN, availability, location, description){
+    constructor(bookId, title, author, genre, ISBN, availability = true, location, description){
         this.bookId = bookId;
         this.title = title;
         this.author = author;

@@ -1,12 +1,3 @@
-User = ""
-
-// Initialize the MVC components
-document.addEventListener('DOMContentLoaded', () => {
-    const model = new CatalogueModel();
-    const view = new CatalogueView();
-    new CatalogueController(model, view);
-});
-
 class CatalogueController { 
     constructor(model, view) {
     this.model = model;
@@ -156,3 +147,10 @@ class CatalogueController {
 
     }
 }
+
+// Initialize the MVC components
+document.addEventListener('DOMContentLoaded', () => {
+    const model = new CatalogueModel();
+    const view = new CatalogueView();
+    new CatalogueController(model, view);
+});

@@ -4,10 +4,10 @@ describe("Library Management System", () => {
         let book;
 
         beforeEach(() => {
-            book = new Book(1, "JavaScript: The Good Parts", "Douglas Crockford", "instructional", "9780596517748", "Library", "A book about JavaScript best practices.");
+            book = new Book(1, "JavaScript: The Good Parts", "Douglas Crockford", "instructional", "9780596517748", true, "Library", "A book about JavaScript best practices.");
         });
 
-        it("should create a book with bookId, title, author, genre, isbn, location, available status, and description", () => {
+        it("should create a book with bookId, title, author, genre, ISBN, available status, location, and description", () => {
             expect(book.bookId).toBe(1);
             expect(book.title).toBe("JavaScript: The Good Parts");
             expect(book.author).toBe("Douglas Crockford");
@@ -56,10 +56,10 @@ describe("Library Management System", () => {
             Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
             model = new CatalogueModel();
-            book1 = new Book(1, "JavaScript: The Good Parts", "Douglas Crockford", "instructional", "9780596517748", "Library", "A book about JavaScript best practices.");
-            book2 = new Book(2, "Eloquent JavaScript", "Marijn Haverbeke", "instructional", "9781593279509", "Programming", "A modern introduction to programming.");
+            book1 = new Book(1, "JavaScript: The Good Parts", "Douglas Crockford", "instructional", "9780596517748", true, "Library", "A book about JavaScript best practices.");
+            book2 = new Book(2, "Eloquent JavaScript", "Marijn Haverbeke", "instructional", "9781593279509", true, "Programming", "A modern introduction to programming.");
         });
-        
+
         it("should add books to the library model.", () => {
             model.addBook(book1);
             model.addBook(book2);
@@ -71,7 +71,7 @@ describe("Library Management System", () => {
 
         it("should edit a book in the library model.", () => {
             model.addBook(book1);
-            const updatedBook = new Book(1, "JavaScript: The Good Parts", "Douglas Crockford", "instructional", "9780596517748", "Library", "Updated description.");
+            const updatedBook = new Book(1, "JavaScript: The Good Parts", "Douglas Crockford", "instructional", "9780596517748", true, "Library", "Updated description.");
             model.editBook(book1.bookId, updatedBook);
 
             expect(model.books[0].description).toBe("Updated description.");

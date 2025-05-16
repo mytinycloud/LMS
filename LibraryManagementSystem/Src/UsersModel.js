@@ -1,71 +1,55 @@
 
+class UserManagement { 
+    constructor() {
+        this.allUsers = [];
+
+    }
+    loadUsers() {
+        const allUsersJSON = localStorage.getItem('Users');
+        const allUsers = allUsersJSON ? JSON.parse(allUsersJSON) : [];
+            return allUsers.map(user=> new User(user.userId, user.userName, user.email, user.password, user.role ));
+    }
+ 
+    saveUsers() {
+        localStorage.setItem('Users', JSON.stringify(this.allUsers));
+    }
+    addUser(user) {
+        if (user) {
+            this.allUsers.push(user);
+            this.saveUsers();
+            this.saveUsers();
+        }
+    }
+    editUser(userId, update) {
+        let user = this.findUserById(userId)
+        Object.assign(user, update)
+    }
+    findUserById(query) {
+        return this.allUsers.find(user => user.userId === query)
+    }
+}
+
 class User {
-    #userId;
-    #name;
-    #email;
-    #password;
-    #role;
-    constructor(userId, userName, email, password, role, ){
-        this.#userId = userId;
-        this.#name = userName;
-        this.#email = email;
-        this.#password = password;
-        this.#role = role;
-    }
-    registerUser(){
-
-    }
-
-    updateUser(){
-
-    }
-
-    removeUser(){
-
+    constructor(userId, userName, email, password, role ){
+        this.userId = userId;
+        this.name = userName;
+        this.email = email;
+        this.password = password;
+        this.role = role;
     }
 }
 
 class Member extends User {
-    #membershipId
-    #borrowedBooks
-    constructor(membershipId, borrowedBooks, ){
-        super(userId, name, email, password, role,);
-        this.#membershipId = membershipId;
-        this.#borrowedBooks = borrowedBooks;
-    }
-    borrowBook(){
-
-    }
-    returnBook(){
-
-    }
-    checkBorrowingStatus(){
-        
+    constructor(userId, name, email, password, role, membershipId, borrowedBooks= [], ){
+        super(userId, name, email, password, role);
+        this.membershipId = membershipId;
+        this.borrowedBooks = borrowedBooks;
     }
 }
 
-class Libraian extends User {
-    constructor(){
+class Librarian extends User {
+    constructor(userId, name, email, password, role){
         super(userId, name, email, password, role,);
     }
-    addBook(){
-
-    }
-    updateBook(){
-
-    }
-    deleteBook(){
-        
-    }
-    registerUser(){
-
-    }
-
-    updateUser(){
-
-    }
-
-    removeUser(){
-        
-    }
 }
+
