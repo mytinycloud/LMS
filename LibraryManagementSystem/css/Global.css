@@ -120,6 +120,14 @@ input[type="password"], textarea, select {
     font-size: 16px;
     background-color: var(--soft-background);
 }
+input[type="email"], textarea, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: var(--soft-background);
+}
 
 select {
     height: 42px;

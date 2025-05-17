@@ -8,6 +8,7 @@ class UserManagementController{
     
 
     // Bind event listeners to the correct form IDs
+    document.getElementById("add-user-button").addEventListener("click", () => {this.view.showForm("add-user-form")});
     document.getElementById('add-user-form').addEventListener('submit', this.handleAddUser.bind(this));
     //document.getElementById('edit-user-form').addEventListener('submit', this.handleEditUser.bind(this));
     //this.searchInput.addEventListener('input', this.handleSearch.bind(this));

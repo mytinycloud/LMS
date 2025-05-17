@@ -10,6 +10,7 @@ class CatalogueController {
     // Bind event listeners to the correct form IDs
     document.getElementById('add-book-form').addEventListener('submit', this.handleAddBook.bind(this));
     document.getElementById('edit-book-form').addEventListener('submit', this.handleEditBook.bind(this));
+    
     this.searchInput.addEventListener('input', this.handleSearch.bind(this));
 
     this.view.updateBookTable(this.model.getBooks());  // Initial render
