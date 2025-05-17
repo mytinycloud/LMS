@@ -77,10 +77,9 @@ class CatalogueController {
         this.handleSearch()
     }
 
-    handleSearch() {
-        
-        const query = this.searchInput.value.toLowerCase().trim();
-        
+    handleSearch(event) {
+        event.preventDefault();
+        const query = this.searchInput.value;
         if (query === '') {
             this.view.updateBookTable(this.model.getBooks());
         } else {

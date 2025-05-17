@@ -65,10 +65,10 @@ class CatalogueView {
                 <td>${book.genre}</td>
                 <td>${book.availability ? "Available" : "Unavailable"}</td>   
                 <td class="btn-group">
-                    <button class="view-btn" data-book-id="${book.bookId}">View</button>
-                    <button class="edit-btn" data-book-id="${book.bookId}">Edit</button>
-                    <button class="borrow-btn" data-book-id="${book.bookId}">Borrow</button>
-                    <button class="delete-btn" data-book-id="${book.bookId}">Delete</button>
+                    <button class="view-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/View.png" ></button>
+                    <button class="edit-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Edit.png"></button>
+                    <button class="borrow-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Borrow.png"></button>
+                    <button class="delete-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Delete.png"></button>
                 </td>
 
             `;

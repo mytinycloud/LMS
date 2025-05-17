@@ -1,7 +1,8 @@
 
 class UserManagement { 
     constructor() {
-        this.allUsers = [];
+        this.allMembers = [];
+        this.allLibrarians = [];
 
     }
     loadUsers() {
@@ -14,11 +15,10 @@ class UserManagement {
         localStorage.setItem('Users', JSON.stringify(this.allUsers));
     }
     addUser(user) {
-        if (user) {
-            this.allUsers.push(user);
+        if (user.role == "Member") {
+            this.allMembers.push(user);
             this.saveUsers();
-            this.saveUsers();
-        }
+        }else{}
     }
     editUser(userId, update) {
         let user = this.findUserById(userId)

@@ -51,15 +51,15 @@ class CatalogueModel {
         }
     }
     // Filter books based on query
-    searchBook(search) {
+    searchBook(query) {
+        const adjustedQuery = query.toLowerCase().trim()
         return this.books.filter(book => 
-            (!isNaN(search) && Number(book.bookId) === Number(search)) ||
-            book.title.includes(search) ||
-            book.author.includes(search) ||
-            book.ISBN.includes(search) ||
-            book.genre.includes(search)
+            (!isNaN(query) && Number(book.bookId) === Number(query)) ||
+            book.author.toLowerCase().trim() === adjustedQuery ||
+            book.title.toLowerCase().trim() === adjustedQuery ||
+            (isNaN(query) && Number(book.ISBN) === Number (query))
         );
-}
+    }
 
     getBooks() {
         return this.books
