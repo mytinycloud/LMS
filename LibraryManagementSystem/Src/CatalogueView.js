@@ -44,7 +44,7 @@ class CatalogueView {
         if (genreField) genreField.value = book.genre;
         if (isbnField) isbnField.value = book.ISBN;
         if (availabilityField) availabilityField.value ? "Available" : "Not Available";
-        if (availabilityTextField) availabilityTextField.value ? "Available" : "Not Available";
+        if (availabilityTextField) availabilityTextField.value = book.availability ? "Available" : "Not Available" ;
         if (locationField) locationField.value = book.location || "";
         if (descriptionField) descriptionField.value = book.description || "";
     }

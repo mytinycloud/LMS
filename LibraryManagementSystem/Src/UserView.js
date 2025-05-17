@@ -54,10 +54,10 @@ class UserView {
                 <td>${user.genre}</td>
                 <td>${user.availability ? "Available" : "Unavailable"}</td>   
                 <td class="btn-group">
-                    <button class="view-btn" data-user-id="${user.userId}"><img src="../assets/View.png" width=20px height=20px></button>
-                    <button class="edit-btn" data-user-id="${user.userId}"><img src="../assets/Edit.png" width=20px height=20px></button>
-                    <button class="borrow-btn" data-user-id="${user.userId}"><img src="../assets/Borrow.png" width=20px height=20px></button>
-                    <button class="delete-btn" data-user-id="${user.userId}"><img src="../assets/Delete.png" width=20px height=20px></button>
+                    <button class="view-btn" data-user-id="${user.userId}"><img src="../assets/View.png"></button>
+                    <button class="edit-btn" data-user-id="${user.userId}"><img src="../assets/Edit.png"></button>
+                    <button class="borrow-btn" data-user-id="${user.userId}"><img src="../assets/Borrow.png"></button>
+                    <button class="delete-btn" data-user-id="${user.userId}"><img src="../assets/Delete.png"></button>
                 </td>
 
             `;

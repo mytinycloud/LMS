@@ -40,8 +40,10 @@ class CatalogueModel {
     deleteBook(bookId) {
         console.log(`bookID ${bookId}`);
         console.log("bookId type  ", typeof bookId);
-        let book = this.searchBook(bookId);
-        if (book) {          
+        let books = this.searchBook(bookId);
+        let book = books[0]
+        if (book) {   
+            console.log(book)       
             const removedBook = book.title;
             this.books = this.books.filter(book => Number(book.bookId) !== Number(bookId));
             this.saveBooks();
@@ -50,17 +52,66 @@ class CatalogueModel {
             console.log(`Book with ID ${bookId} not found. Could not delete book.`);
         }
     }
-    // Filter books based on query
-    searchBook(query) {
-        const adjustedQuery = query.toLowerCase().trim()
-        return this.books.filter(book => 
-            (!isNaN(query) && Number(book.bookId) === Number(query)) ||
-            book.author.toLowerCase().trim() === adjustedQuery ||
-            book.title.toLowerCase().trim() === adjustedQuery ||
-            (isNaN(query) && Number(book.ISBN) === Number (query))
-        );
+    calculateLevenshteinDistance(searchTerm, bookIdentifier) {
+        const searchTermLength = searchTerm.length;
+        const bookIdentifierLength = bookIdentifier.length;
+
+        let distanceMatrix = Array(searchTermLength + 1);
+
+        for (let row = 0; row <= searchTermLength; row++) {
+            distanceMatrix[row] = Array(bookIdentifierLength + 1);
+        }
+
+        for (let row = 0; row <= searchTermLength; row++) {
+            distanceMatrix[row][0] = row;
+        }
+
+        for (let column = 0; column <= bookIdentifierLength; column++) {
+            distanceMatrix[0][column] = column;
+        }
+
+        for (let row = 1; row <= searchTermLength; row++) {
+            for (let column = 1; column <= bookIdentifierLength; column++) {
+                if (searchTerm[row - 1] === bookIdentifier[column - 1]) {
+
+                    distanceMatrix[row][column] = distanceMatrix[row - 1][column - 1];
+                } else {
+                    distanceMatrix[row][column] = Math.min(
+                        distanceMatrix[row - 1][column] + 1, 
+                        distanceMatrix[row][column - 1] + 1, 
+                        distanceMatrix[row - 1][column - 1] + 1 
+                    );
+                }
+            }
+        }
+        return distanceMatrix[searchTermLength][bookIdentifierLength];
     }
 
+    // Filter books based on query
+    searchBook(query) {
+        const fuzinessness = 2
+        const queryWords = query.toLowerCase().split(/\s+/)
+    
+        return this.books.filter(book => {
+            if (!isNaN(query) && Number(query) === Number(book.ISBN) || !isNaN(query) && Number(query) === Number(book.bookId) ) {
+                return true;
+            }
+            else if (queryWords.some(word =>
+                book.title.toLowerCase().includes(word) ||
+                book.author.toLowerCase().includes(word) ||
+                book.genre.toLowerCase().includes(word)
+            )) {
+                return true
+            }
+            return queryWords.some(word => {
+                let titleDistance = this.calculateLevenshteinDistance(word, book.title)
+                let authorDistance = this.calculateLevenshteinDistance(word, book.author)
+                let genreDistance = this.calculateLevenshteinDistance(word, book.genre)
+
+                return titleDistance <= fuzinessness || authorDistance <= fuzinessness || genreDistance <= fuzinessness;
+            });
+        });
+    }
     getBooks() {
         return this.books
     }

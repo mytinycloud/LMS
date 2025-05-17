@@ -66,7 +66,19 @@ describe("Library Management System", () => {
 
             expect(model.books.length).toBe(2);
             expect(model.books[0].title).toBe("JavaScript: The Good Parts");
+            expect(model.books[0].author).toBe("Douglas Crockford");
+            expect(model.books[0].ISBN).toBe("9780596517748");
+            expect(model.books[0].genre).toBe("instructional");
+            expect(model.books[0].availability).toBe(true);
+            expect(model.books[0].location).toBe("Library");
+            expect(model.books[0].description).toBe("A book about JavaScript best practices.");
             expect(model.books[1].title).toBe("Eloquent JavaScript");
+            expect(model.books[1].author).toBe("Marijn Haverbeke");
+            expect(model.books[1].ISBN).toBe("9781593279509");
+            expect(model.books[1].genre).toBe("instructional");
+            expect(model.books[1].availability).toBe(true);
+            expect(model.books[1].location).toBe("Programming");
+            expect(model.books[1].description).toBe("A modern introduction to programming.");
         });
 
         it("should edit a book in the library model.", () => {

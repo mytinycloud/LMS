@@ -3,11 +3,14 @@ class CatalogueController {
     this.model = model;
     this.view = view;
 
+    // DOM Elements
+    this.searchInput = document.getElementById('search');
+    
+
     // Bind event listeners to the correct form IDs
     document.getElementById('add-book-form').addEventListener('submit', this.handleAddBook.bind(this));
     document.getElementById('edit-book-form').addEventListener('submit', this.handleEditBook.bind(this));
-    document.getElementById('search').addEventListener('input', this.handleSearch.bind(this));
-    document.getElementById('search-button').addEventListener('click', this.handleSearchButton.bind(this));
+    this.searchInput.addEventListener('input', this.handleSearch.bind(this));
 
     this.view.updateBookTable(this.model.getBooks());  // Initial render
     this.addEventListenersToButtons();  // Add event listeners to buttons
@@ -64,22 +67,18 @@ class CatalogueController {
     }
 
     handleDeleteBook(event) {
-        event.preventDefault();
-        const bookId = event.target.getAttribute('data-book-id'); 
+        console.log("delete clicked")
+        const bookId = event.currentTarget.getAttribute('data-book-id'); 
         if (bookId) {
+            console.log('got id')
             this.model.deleteBook(bookId);
             this.view.updateBookTable(this.model.getBooks());
         }
         this.addEventListenersToButtons();
     }
 
-    handleSearchButton() {
-        this.handleSearch()
-    }
-
-    handleSearch(event) {
-        event.preventDefault();
-        const query = this.searchInput.value;
+    handleSearch() {
+        const query = this.searchInput.value.trim()
         if (query === '') {
             this.view.updateBookTable(this.model.getBooks());
         } else {
@@ -112,6 +111,7 @@ class CatalogueController {
 
                 const form = document.getElementById('edit-book-form');
                 form.setAttribute('data-editing-id', bookId);
+                console.log(book)
                 this.view.setplaceholder(book, 'edit-book-form');
             });
         });
