@@ -36,7 +36,7 @@
                     </div>
                     <div class="form-group">
                         <label for="add-email">email</label>
-                        <input type="text" id="add-email" name="email" required>
+                        <input type="email" id="add-email" name="email" required>
                     </div>
                     <div class="form-group">
                         <label for="add-password">password</label>
@@ -68,8 +68,7 @@
                     <input type="text" id="search" placeholder="Search by Name...">
                 </div>
                 <div class="button-group">
-                    <button id="search-button">Search</button>
-                    <button onclick="catalogueView.showForm('add-user-form')">Add User</button>
+                    <button onclick="userView.showForm('add-user-form')">Add User</button>
                 </div>
             </div>
 
@@ -94,4 +93,8 @@
             <p> 2025 BCDE102 James Hart</p>
         </footer>
     </div>
+    <script src="../Src/UserModel.js"></script> 
+    <script src="../Src/UserController.js"></script>
+    <script src="../Src/UserView.js"></script>
+</body>
 </html>

@@ -89,29 +89,39 @@ class CatalogueModel {
 
     // Filter books based on query
     searchBook(query) {
-        const fuzinessness = 2
-        const queryWords = query.toLowerCase().split(/\s+/)
-    
+        const fuzinessness = 5
+        const queryWords = String(query).toLowerCase().replace(/[^\w\s]/g, '').trim().split(/\s+/)
+
         return this.books.filter(book => {
-            if (!isNaN(query) && Number(query) === Number(book.ISBN) || !isNaN(query) && Number(query) === Number(book.bookId) ) {
+            const title = book.title.toLowerCase().replace(/[^\w\s]/g, '').trim()
+            const author = book.author.toLowerCase().replace(/[^\w\s]/g, '').trim()
+            const genre = book.genre.toLowerCase().replace(/[^\w\s]/g, '').trim()
+
+            if (!isNaN(query) && Number(query) === Number(book.bookId) || Number(query) === Number(book.ISBN) ) {
                 return true;
             }
-            else if (queryWords.some(word =>
-                book.title.toLowerCase().includes(word) ||
-                book.author.toLowerCase().includes(word) ||
-                book.genre.toLowerCase().includes(word)
+            if (queryWords.some(word =>
+                title.includes(word) ||
+                author.includes(word) ||
+                genre.includes(word)
             )) {
                 return true
             }
             return queryWords.some(word => {
-                let titleDistance = this.calculateLevenshteinDistance(word, book.title)
-                let authorDistance = this.calculateLevenshteinDistance(word, book.author)
-                let genreDistance = this.calculateLevenshteinDistance(word, book.genre)
+                const titleWords = book.title.split(/\s+/);  
+                const authorWords = book.author.split(/\s+/);
+                const genreWords = book.genre.split(/\s+/);
 
+                const titleDistance = Math.min(...titleWords.map(tWord => this.calculateLevenshteinDistance(word, tWord)));
+                const authorDistance = Math.min(...authorWords.map(aWord => this.calculateLevenshteinDistance(word, aWord)));
+                const genreDistance = Math.min(...genreWords.map(gWord => this.calculateLevenshteinDistance(word, gWord)));
+
+                
                 return titleDistance <= fuzinessness || authorDistance <= fuzinessness || genreDistance <= fuzinessness;
             });
         });
     }
+
     getBooks() {
         return this.books
     }

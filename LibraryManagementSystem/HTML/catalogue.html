@@ -43,7 +43,7 @@
                     </div>
                     <div class="form-group">
                         <label for="add-ISBN">ISBN</label>
-                        <input type="text" id="add-ISBN" name="ISBN" required>
+                        <input type="Number" id="add-ISBN" name="ISBN" required>
                     </div>
                     <div class="form-group">
                         <label for="add-location">Location</label>
@@ -149,10 +149,9 @@
             
             <div class="search-container">
                 <div class="search-input">
-                    <input type="text" id="search" placeholder="Search by title, author, ISBN...">
+                    <input type="text" id="search" placeholder="Search by title, Author, Genre or ISBN...">
                 </div>
                 <div class="button-group">
-                    <button id="search-button">Search</button>
                     <button onclick="catalogueView.showForm('add-book-form')">Add Book</button>
                 </div>
             </div>
@@ -178,8 +177,6 @@
             <p> 2025 BCDE102 James Hart</p>
         </footer>
     </div>
-
-    <!-- Close the modal when clicking outside of it -->
     <script src="../Src/CatalogueModel.js"></script> 
     <script src="../Src/CatalogueController.js"></script>
     <script src="../Src/CatalogueView.js"></script>

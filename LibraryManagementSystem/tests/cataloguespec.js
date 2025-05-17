@@ -95,20 +95,23 @@ describe("Library Management System", () => {
             
             model.deleteBook(book1.bookId);
 
-            expect(model.books.length).toBe(1);
-            expect(model.books[0].bookId).toBe(2);
+            expect(model.books.length).toBe(1); // Only one book should remain
+            expect(model.books[0].bookId).toBe(2); // The remaining book should be book2 id's arnt changed if books are deleted
         });
 
-        it("should search books by title or author.", () => {
+        it("should search books by title or author or genre. with an error", () => {
             model.addBook(book1);
             model.addBook(book2);
 
-            const search = model.searchBook("JavaScript");
-            expect(search.length).toBe(2);
+            const search = model.searchBook("Jaba");
+            expect(search.length).toBe(2, "search by title");
 
-            const searchResultsAuthor = model.searchBook("Douglas");
-            expect(searchResultsAuthor.length).toBe(1);
+            const searchResultsAuthor = model.searchBook("Doug");
+            expect(searchResultsAuthor.length).toBe(1,"search by author");
             expect(searchResultsAuthor[0].author).toBe("Douglas Crockford");
+
+            const searchResultsGenre = model.searchBook("iNsTrectional");
+            expect(searchResultsGenre.length).toBe(2,"search by genre");
         });
     
         

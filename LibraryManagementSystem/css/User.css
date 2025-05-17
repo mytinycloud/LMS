@@ -70,7 +70,7 @@ th {
 
 tr {
     vertical-align: middle;
-    box-shadow: 0 2px 4px var(--shadow);
+    box-shadow: 0 2px 4px var(--shadow-color);
     transition: background-color 0.3s ease;
     height: 48px;
 }
