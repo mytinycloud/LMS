@@ -15,22 +15,29 @@ class CatalogueModel {
 
     // addBook takes a book object from the controller and adds it to the books array, then saves the books to local storage.
     addBook(book) {
-        if (book){
-            console.log("Adding book: ", book);
-            this.books.push(book);
-            this.saveBooks();
-        }else{
+        if (!book || !book.ISBN || !book.bookId) {
             console.log("Book is undefined");
+            return;
         }
+        const existingBookISBN = this.searchByISBN(book.ISBN);
+        const existingBookId = this.searchByBookId(book.bookId);
+        
+        if (existingBookISBN || existingBookId) {
+            console.log("Book already exists in the library.");
+            return;
+        }
+        console.log("Adding book: ", book);
+        this.books.push(book);
+        this.saveBooks();
+        
     }
     // updateBook uses the setters to update the book object with the new values from the controller, then saves the books.
-    editBook(bookId, update) {
-        let books = this.searchBook(bookId);
-        let book = books[0]
+    editBook(bookId, updates) {
+        let book = this.searchByBookId(bookId);
         if (book) {
-            Object.assign(book, update);
+            Object.assign(book, updates);
             this.saveBooks()
-            console.log('tis book was saved: ', update)
+            console.log('tis book was saved: ', updates)
             console.log(`Book with ID ${book.bookId} updated successfully.`);
         } else {
             console.log(`Book with ID ${book.bookId} not found. Could not update Book`);
@@ -40,8 +47,7 @@ class CatalogueModel {
     deleteBook(bookId) {
         console.log(`bookID ${bookId}`);
         console.log("bookId type  ", typeof bookId);
-        let books = this.searchBook(bookId);
-        let book = books[0]
+        let book = this.searchByBookId(bookId);
         if (book) {   
             console.log(book)       
             const removedBook = book.title;
@@ -53,6 +59,8 @@ class CatalogueModel {
         }
     }
     calculateLevenshteinDistance(searchTerm, bookIdentifier) {
+
+        // Levenstein distance algorithm 
         const searchTermLength = searchTerm.length;
         const bookIdentifierLength = bookIdentifier.length;
 
@@ -88,7 +96,7 @@ class CatalogueModel {
     }
 
     // Filter books based on query
-    searchBook(query) {
+    searchBooks(query) {
         const fuzinessness = 5
         const queryWords = String(query).toLowerCase().replace(/[^\w\s]/g, '').trim().split(/\s+/)
 
@@ -112,18 +120,24 @@ class CatalogueModel {
                 const authorWords = book.author.split(/\s+/);
                 const genreWords = book.genre.split(/\s+/);
 
-                const titleDistance = Math.min(...titleWords.map(tWord => this.calculateLevenshteinDistance(word, tWord)));
-                const authorDistance = Math.min(...authorWords.map(aWord => this.calculateLevenshteinDistance(word, aWord)));
-                const genreDistance = Math.min(...genreWords.map(gWord => this.calculateLevenshteinDistance(word, gWord)));
+                const titleDistance = Math.min(...titleWords.map(titleWord => this.calculateLevenshteinDistance(word, titleWord)));
+                const authorDistance = Math.min(...authorWords.map(authorWord => this.calculateLevenshteinDistance(word, authorWord)));
+                const genreDistance = Math.min(...genreWords.map(genreWord => this.calculateLevenshteinDistance(word, genreWord)));
 
                 
                 return titleDistance <= fuzinessness || authorDistance <= fuzinessness || genreDistance <= fuzinessness;
             });
         });
     }
+    searchByBookId(query) {
+        return this.books.find(book => Number(book.bookId) === Number(query));
+    }
+    searchByISBN(query) {
+        return this.books.find(book => Number(book.ISBN) === Number(query));
+    }
 
     getBooks() {
-        return this.books
+        return this.books;
     }
     
 }

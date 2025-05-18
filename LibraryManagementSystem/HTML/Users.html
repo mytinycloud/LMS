@@ -44,16 +44,41 @@
                     </div>
                     <div class="form-group">
                         <label for="add-role">role</label>
-                        <input type="text" id="add-role" name="role" required>
+                        <select id="add-role" name="role" required>
+                        <option value="Member" selected>Member</option>
+                        <option value="Librarian">Librarian</option>
+                        </select>
+                    </div>
+                    <button type="submit">Add User</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="edit-user-form" class="modal">
+            <div class="modal-content">
+                <span class="close-button" onclick="catalogueView.hideForm('edit-user-form')">&times;</span>
+                <h2>Edit User</h2>
+                <form id="edit-user-form">
+                    <div class="form-group">
+                        <label for="edit-name">name</label>
+                        <input type="text" id="edit-name" name="name" required>
                     </div>
                     <div class="form-group">
-                        <label for="add-location">Location</label>
-                        <input type="text" id="add-location" name="location">
+                        <label for="edit-email">email</label>
+                        <input type="email" id="edit-email" name="email" required>
                     </div>
                     <div class="form-group">
-                        <label for="add-description">Description</label>
-                        <textarea id="add-description" name="description" rows="4"></textarea>
+                        <label for="edit-password">password</label>
+                        <input type="password" id="edit-password" name="password" required>
                     </div>
+                    <div class="form-group">
+                        <label for="edit-role">role</label>
+                        <select id="edit-role" name="role" required>
+                        <option value="Member">Member</option>
+                        <option value="Librarian">Librarian</option>
+                        </select>
+                    </div>
+
                     <button type="submit">Add User</button>
                 </form>
             </div>

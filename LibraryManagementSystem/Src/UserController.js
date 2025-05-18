@@ -10,38 +10,77 @@ class UserManagementController{
     // Bind event listeners to the correct form IDs
     document.getElementById("add-user-button").addEventListener("click", () => {this.view.showForm("add-user-form")});
     document.getElementById('add-user-form').addEventListener('submit', this.handleAddUser.bind(this));
-    //document.getElementById('edit-user-form').addEventListener('submit', this.handleEditUser.bind(this));
-    //this.searchInput.addEventListener('input', this.handleSearch.bind(this));
+    document.getElementById('edit-user-form').addEventListener('submit', this.handleEditUser.bind(this));
+
+    this.searchInput.addEventListener('input', this.handleSearch.bind(this));
 
     this.view.updateUserTable(this.model.getUsers());  // Initial render
     this.addEventListenersToButtons();  // Add event listeners to buttons
     }
 
+    
+
     handleAddUser(event) {
         event.preventDefault();
-        let userId = this.model.getusers().length + 1;
-        
+        let userId = this.model.getUsers().length + 1;
         // Get values from the add form
         const addForm = document.getElementById('add-user-form');
         const name = addForm.querySelector('input[name="name"]').value;
         const email = addForm.querySelector('input[name="email"]').value;
         const password = addForm.querySelector('input[name="password"]').value;
-        const role = addForm.querySelector('input[name="role"]').value;
-
-        if (role === "Member") {
-            membershipId = this.model.getMembers().length + 1 + Math.floor(Math.random() * 10000);
-        }
-
-        const newUser = new user(userId, name, email, password, role, membershipId);
+        const roleField = addForm.querySelector('select[name="role"]')
+        const selectedRole = roleField.options[roleField.selectedIndex].value; 
+        const newUser = new User(userId, name, email, password, selectedRole,);
         
-        this.model.adduser(newUser);
-        
+        this.model.addUser(newUser);
+    
         // Update view
         this.view.clearForm('add-user-form');
         this.view.hideForm('add-user-form');
         this.view.updateUserTable(this.model.getUsers());
         this.addEventListenersToButtons();  // Re-add event listeners as the table has been refreshed
         }
+
+    handleEditUser(event) {
+        event.preventDefault();
+        const editForm = document.getElementById('edit-user-form');
+        const userId = editForm.getAttribute('data-editing-id');
+
+        const name = editForm.querySelector('input[name="name"]').value;
+        const email = editForm.querySelector('input[name="email"]').value;
+        const password = editForm.querySelector('password[name="password"]').value;
+        const roleField = editForm.querySelector('select[name="role"]')
+        const selectedRole = roleField.options[roleField.selectedIndex].value;
+
+        const updatedUser = new User(userId, name, email, password, selectedRole);  // update book for model
+        this.model.editUser(userId, updatedUser);  // update model  
+
+        // Update view
+        this.view.clearForm('edit-user-form');
+        this.view.hideForm('edit-user-form');
+        this.view.updateUserTable(this.model.getUsers());
+        this.addEventListenersToButtons();  // Re-add event listeners as the table has been refreshed
+    }
+
+    handleDeleteUser(event) {
+        const userId = event.currentTarget.getAttribute('data-user-id');  // Gets userId of the user linked to the delete button
+        if (confirm("Are you sure you want to delete this user?")) {
+            this.model.deleteUser(userId);  // delete user from model
+            this.view.updateUserTable(this.model.getUsers());  // update view
+            this.addEventListenersToButtons();  // Re-add event listeners as the table has been refreshed
+        }   
+    }
+
+    handleSearch() {
+        const query = this.searchInput.value.trim()
+        if (query === '') {
+            this.view.updateUserTable(this.model.getUsers());
+        } else {
+            const filteredUsers = this.model.searchUsers(query);  
+            this.view.updateUserTable(filteredUsers);
+        }
+        this.addEventListenersToButtons();
+    }
 
     addEventListenersToButtons() {
         // Add listeners to delete buttons
@@ -58,8 +97,7 @@ class UserManagementController{
                 console.log (userId)
 
                 // gets the rest of the user details to send to view.setplaceholder 
-                const users = this.model.searchUser(userId);
-                const user = users[0];
+                const user = this.model.findUserById(userId);
 
                 this.view.showForm('edit-user-form'); // show  the form 
 
@@ -68,36 +106,7 @@ class UserManagementController{
                 console.log(user)
                 this.view.setplaceholder(user, 'edit-user-form');
             });
-        });
-
-        const viewButtons = document.querySelectorAll('.view-btn'); // Link edit button 
-        viewButtons.forEach(button => {
-            button.addEventListener('click', (event) => {
-                const userId = event.currentTarget.getAttribute('data-user-id');  // Gets userId of the user linked to the edit button 
-                console.log (userId)
-
-                // gets the rest of the user details to send to view.setplaceholder 
-                const users = this.model.searchUser(userId);
-                const user = users[0];
-
-                this.view.showForm('view-user-form'); // show  the form 
-
-                const form = document.getElementById('view-user-form');
-                form.setAttribute('data-editing-id', userId);
-                this.view.setplaceholder(user, 'view-user-form');
-            });
-        });
-
-        const borrowButtons = document.querySelectorAll('.borrow-btn'); // Link edit button 
-        borrowButtons.forEach(button => {
-            button.addEventListener('click', (event) => { 
-                const userId = event.currentTarget.getAttribute('data-user-id');  // Gets userId of the user linked to the edit button 
-                console.log (userId)
-
-
-            });
-        });
-
+        })
     }
 }
         // Initialize the MVC components

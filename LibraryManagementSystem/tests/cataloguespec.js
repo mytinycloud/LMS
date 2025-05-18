@@ -58,6 +58,7 @@ describe("Library Management System", () => {
             model = new CatalogueModel();
             book1 = new Book(1, "JavaScript: The Good Parts", "Douglas Crockford", "instructional", "9780596517748", true, "Library", "A book about JavaScript best practices.");
             book2 = new Book(2, "Eloquent JavaScript", "Marijn Haverbeke", "instructional", "9781593279509", true, "Programming", "A modern introduction to programming.");
+            book3 = new Book(3, "JavaScript: The Definitive Guide", "David Flanagan", "instructional", "9780596517748", true, "Library", "A comprehensive guide to JavaScript."); //same ISBN as book1
         });
 
         it("should add books to the library model.", () => {
@@ -79,6 +80,14 @@ describe("Library Management System", () => {
             expect(model.books[1].availability).toBe(true);
             expect(model.books[1].location).toBe("Programming");
             expect(model.books[1].description).toBe("A modern introduction to programming.");
+        });
+        it('should not add a book if it is a duplicate.', () => {
+            model.addBook(book1);
+            model.addBook(book1); // Attempt to add the same book again
+            model.addBook(book3); // Attempt to add a book with the same ISBN
+
+            expect(model.books.length).toBe(1); // Should still be 1 book
+            expect(model.books[0].title).toBe("JavaScript: The Good Parts");
         });
 
         it("should edit a book in the library model.", () => {
@@ -103,16 +112,37 @@ describe("Library Management System", () => {
             model.addBook(book1);
             model.addBook(book2);
 
-            const search = model.searchBook("Jaba");
+            const search = model.searchBooks("Jaba");
             expect(search.length).toBe(2, "search by title");
 
-            const searchResultsAuthor = model.searchBook("Doug");
+            const searchResultsAuthor = model.searchBooks("Doug");
             expect(searchResultsAuthor.length).toBe(1,"search by author");
             expect(searchResultsAuthor[0].author).toBe("Douglas Crockford");
 
-            const searchResultsGenre = model.searchBook("iNsTrectional");
-            expect(searchResultsGenre.length).toBe(2,"search by genre");
+            const searchResultsGenre = model.searchBooks("iNsTrectional");
+            expect(searchResultsGenre.length).toBe(2);
         });
+        it("should not find a book if its too different", () => {
+
+            const searchResults = model.searchBooks("Python Book");
+            expect(searchResults.length).toBe(0);
+            expect(model.calculateLevenshteinDistance("Python Book", "JavaScript: The Good Parts")).toBeGreaterThan(3);
+        });
+        it("should search books by ISBN.", () => {
+            model.addBook(book1);
+            model.addBook(book2);
+
+            const searchResults = model.searchByISBN("9780596517748");
+            expect(searchResults.title).toBe("JavaScript: The Good Parts");
+        });
+        it("should search books by bookId.", () => {
+            model.addBook(book1);
+            model.addBook(book2);
+
+            const searchResults = model.searchByBookId(1);
+            expect(searchResults.title).toBe("JavaScript: The Good Parts");
+        });
+
     
         
     

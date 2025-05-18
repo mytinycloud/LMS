@@ -1,73 +1,144 @@
 
 class UserManagement { 
     constructor() {
-        this.allUsers = [];
-        this.allMembers = [];
-        this.allLibrarians = [];
-
+        this.allUsers = this.loadUsers();
+        this.allMembers = this.loadMembers();
+        this.allLibrarians = this.loadLibrarians();
+    }
+    loadData(key, type) {
+        const dataJSON = localStorage.getItem(key);
+        const ParsedData = dataJSON ? JSON.parse(dataJSON) : [];
+        return ParsedData.map(item => new type(...Object.values(item)));
     }
     loadUsers() {
-        const allUsersJSON = localStorage.getItem('Users');
-        const allMembersJSON = localStorage.getItem('Members');
-        const allLibrariansJSON = localStorage.getItem('Librarians');   
-        const allUsers = allUsersJSON ? JSON.parse(allUsersJSON) : [];
-        const allMembers = allMembersJSON ? JSON.parse(allMembersJSON) : [];
-        const allLibrarians = allLibrariansJSON ? JSON.parse(allLibrariansJSON) : [];
-
-        const users = allUsers.map(user=> new User(user.userId, user.userName, user.email, user.password, user.role ));
-        const members = allMembers.map(member => new Member(member.userId, member.userName, member.email, member.password, member.role, member.membershipId, member.borrowedBooks));
-        const librarians = allLibrarians.map(librarian => new Librarian(librarian.userId, librarian.userName, librarian.email, librarian.password, librarian.role));
-        
-        return {
-            allUsers: users,
-            allMembers: members,
-            allLibrarians: librarians
-        }
+        return this.loadData('Users', User);
+        //const userJSON = localStorage.getItem('users');
+        //const user = userJSON ? JSON.parse(userJSON) : [];
+            //return user.map(user => new User(user.userId, user.userName, user.email, user.password, user.role));
+    }
+    loadMembers() {
+       return this.loadData('Members', Member);
+        //const memberJSON = localStorage.getItem('members');
+        //const member = memberJSON ? JSON.parse(memberJSON) : [];
+            //return member.map(member => new Member(member.userId, member.userName, member.email, member.password, member.role, member.membershipId));
+    }
+    loadLibrarians() {
+       return this.loadData('Librarians', Librarian);
+       // const librarianJSON = localStorage.getItem('librarians');
+        //const librarian = librarianJSON ? JSON.parse(librarianJSON) : [];
+         //   return librarian.map(librarian => new Librarian(librarian.userId, librarian.userName, librarian.email, librarian.password, librarian.role));
     }
  
     saveUsers() {
+        console.log("user saved as", this.allUsers)
         localStorage.setItem('Users', JSON.stringify(this.allUsers));
     }
     saveMembers() {
+        console.log("member saved")
         localStorage.setItem('Members', JSON.stringify(this.allMembers));
     }
     saveLibrarians() {
+        console.log("librarian saved")
         localStorage.setItem('Librarians', JSON.stringify(this.allLibrarians));
     }
     addUser(user) {
+        const existingUser = this.findUserById(user.userId);
+        if (existingUser) {
+            console.log("User already exists");
+            return;
+        }
         let newUser = new User(user.userId, user.userName, user.email, user.password, user.role);
         this.allUsers.push(newUser);
         this.saveUsers();
-        if (user.role == "Member") {
-            let membershipId = this.allMembers.length + 1 + Math.floor(Math.random() * 10000);
+        if (user.role === "Member") {
+            let membershipId = this.allMembers.length + 1;
+            console.log("adding member with id", membershipId);
             let member = new Member(user.userId, user.userName, user.email, user.password, user.role, membershipId);
             this.allMembers.push(member);
             this.saveMembers()
         }
-        if (user.role == "Librarian") {
-            this.allLibrarians.push(user);
-            this.allUsers.push(user);
-            this.saveUsers();
-        }else{
-            console.log("User is undefined");
-        };
+        if (user.role === "Librarian") {
+            this.allLibrarians.push(newUser);
+            this.saveLibrarians();
         }
+    }
           
-    editUser(userId, update) {
+    editUser(userId, updates) {
         let user = this.findUserById(userId);
-        Object.assign(user, update)
+        Object.assign(user, updates)
+        if (user.membershipId) {
+            this.saveMembers();
+        }else if (user.role === "Librarian") {
+            this.saveLibrarians();
+        }
+        let newUser = new User(user.userId, user.userName, user.email, user.password, user.role);
+        Object.assign(user, newUser);
+        this.saveUsers();
     }
+
+    deleteUser(userId) {
+        let user = this.findUserById(userId);
+        let removedUser = user.userName;
+        if (user) {        
+            //remove removed user from members
+            if (user.role === "Member") {
+                this.allMembers = this.allMembers.filter(member => Number(member.userId) !== Number(userId));
+                this.saveMembers();
+            }
+            // remove removed user from librarians
+            if (user.role === "Librarian") {
+                this.allLibrarians = this.allLibrarians.filter(librarian => Number(librarian.userId) !== Number(userId));
+                this.saveLibrarians();
+            }
+            this.allUsers = this.allUsers.filter(user => Number(user.userId) !== Number(userId));
+            this.saveUsers();
+            console.log(`"${removedUser}" was removed.`);
+        }
+    }
+
+    searchUsers(query) {
+        const fuzinessness = 5
+        const queryWords = String(query).toLowerCase().replace(/[^\w\s]/g, '').trim().split(/\s+/)
+
+        return this.allUsers.filter(user => {
+            const userName = user.userName.toLowerCase().replace(/[^\w\s]/g, '').trim()
+            const email = user.email.toLowerCase().replace(/[^\w\s]/g, '').trim()
+
+            if (!isNaN(query) && Number(query) === Number(user.userId)) {
+                return true;
+            }
+            if (queryWords.some(word =>
+                userName.includes(word) ||
+                email.includes(word)
+            )) {
+                return true
+            }
+            return queryWords.some(word => {
+                const names = user.userName.split(/\s+/);  
+                const emailparts = user.email.split(/\s+/);
+
+                const nameDistance = Math.min(...names.map(name => CatalogueModel.calculateLevenshteinDistance(word, name)));
+                const emailDistance = Math.min(...emailparts.map(emailpart => CatalogueModel.calculateLevenshteinDistance(word, emailpart)));
+                
+                return nameDistance <= fuzinessness || emailDistance <= fuzinessness;
+            });
+        });
+    }
+
     findUserById(query) {
-        return this.allUsers.find(user => user.userId === query)
+        return this.allUsers.find(user => user.userId === query);
     }
+
     getUsers() {
-        return this.allUsers
+        return this.allUsers;
     }
+
     getMembers() {
-        return this.allMembers
+        return this.allMembers;
     } 
+
     getLibrarians() {
-        return this.allLibrarians
+        return this.allLibrarians;
     }
 }
 
@@ -82,7 +153,7 @@ class User {
 }
 
 class Member extends User {
-    constructor(userId, userName, email, password, role, membershipId, borrowedBooks= [], ){
+    constructor(userId, userName, email, password, role, membershipId, borrowedBooks= []){
         super(userId, userName, email, password, role);
         this.membershipId = membershipId;
         this.borrowedBooks = borrowedBooks;
@@ -91,7 +162,7 @@ class Member extends User {
 
 class Librarian extends User {
     constructor(userId, userName, email, password, role){
-        super(userId, userName, email, password, role,);
+        super(userId, userName, email, password, role);
     }
 }
 

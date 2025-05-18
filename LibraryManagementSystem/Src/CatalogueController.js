@@ -53,7 +53,7 @@ class CatalogueController {
         const author = editForm.querySelector('input[name="author"]').value;
         const genre = editForm.querySelector('input[name="genre"]').value;
         const ISBN = editForm.querySelector('input[name="ISBN"]').value;
-        const availability = editForm.querySelector('select[name="availability"]').value === "available"; 
+        const availability = editForm.querySelector('select[name="availability"]').value === "Available"; 
         const location = editForm.querySelector('input[name="location"]').value;
         const description = editForm.querySelector('textarea[name="description"]').value || '';
 
@@ -83,7 +83,7 @@ class CatalogueController {
         if (query === '') {
             this.view.updateBookTable(this.model.getBooks());
         } else {
-            const filteredBooks = this.model.searchBook(query);  
+            const filteredBooks = this.model.searchBooks(query);  
             this.view.updateBookTable(filteredBooks);
         }
         this.addEventListenersToButtons();
@@ -105,9 +105,7 @@ class CatalogueController {
                 console.log (bookId)
 
                 // gets the rest of the book details to send to view.setplaceholder 
-                const books = this.model.searchBook(bookId);
-                const book = books[0];
-
+                const book = this.model.searchByBookId(bookId);
                 this.view.showForm('edit-book-form'); // show  the form 
 
                 const form = document.getElementById('edit-book-form');
@@ -124,9 +122,7 @@ class CatalogueController {
                 console.log (bookId)
 
                 // gets the rest of the book details to send to view.setplaceholder 
-                const books = this.model.searchBook(bookId);
-                const book = books[0];
-
+                const book = this.model.searchByBookId(bookId)
                 this.view.showForm('view-book-form'); // show  the form 
 
                 const form = document.getElementById('view-book-form');

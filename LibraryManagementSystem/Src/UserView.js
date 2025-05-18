@@ -23,20 +23,14 @@ class UserView {
     
     setplaceholder(user, modalId) {
         const form = document.getElementById(modalId)
-        const userIdField = form.querySelector('input[name="userId"]');
-        const nameField = form.querySelector('input[name="Name"]');
-        const emailField = form.querySelector('input[name="Email"]');
-        const roleField = form.querySelector('input[name="Role"]');
-        const membershipIdField = form.querySelector('input[name="membershipId"]');
-        
+        const nameField = form.querySelector('input[name="name"]');
+        const emailField = form.querySelector('input[name="email"]');
+        const roleField = form.querySelector('select[name="role"]');
+  
         // Set values if fields exist
-        if (userIdField) userIdField.value = user.userId
         if (nameField) nameField.value = user.userName || "";
         if (emailField) emailField.value = user.email;
         if (roleField) roleField.value = user.role;
-        if (membershipIdField) {
-            membershipIdField.value = user.role === "Member" ? user.membershipId || "" : "";}
-    
     }
 
     updateUserTable(users) {
@@ -54,9 +48,8 @@ class UserView {
                 <td>${user.email}</td>
                 <td>${user.role}</td>   
                 <td class="btn-group">
-                    <button class="view-btn" data-user-id="${user.userId}"><img src="../assets/View.png"></button>
-                    <button class="edit-btn" data-user-id="${user.userId}"><img src="../assets/Edit.png"></button>
-                    <button class="delete-btn" data-user-id="${user.userId}"><img src="../assets/Delete.png"></button>
+                    <button class="edit-btn" data-user-id="${user.userId}"><img class="btnimg" src="../assets/Edit.png"></button>
+                    <button class="delete-btn" data-user-id="${user.userId}"><img class="btnimg" src="../assets/Delete.png"></button>
                 </td>
 
             `;
