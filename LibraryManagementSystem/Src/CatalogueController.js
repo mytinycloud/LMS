@@ -5,8 +5,6 @@ class CatalogueController {
 
     // DOM Elements
     this.searchInput = document.getElementById('search');
-
-    
     
 
     // Bind event listeners to the correct form IDs
@@ -72,7 +70,7 @@ class CatalogueController {
     handleDeleteBook(event) {
         console.log("delete clicked")
         const bookId = event.currentTarget.getAttribute('data-book-id'); 
-        const book = searchByBookId(bookId)
+        const book = this.model.findBookById(bookId)
         if (confirm(`are you sure you want to delete ${book.title}`)) {
             console.log('got id')
             this.model.deleteBook(bookId);
@@ -108,7 +106,7 @@ class CatalogueController {
                 console.log (bookId)
 
                 // gets the rest of the book details to send to view.setplaceholder 
-                const book = this.model.searchByBookId(bookId);
+                const book = this.model.findBookById(bookId);
                 this.view.showForm('edit-book-form'); // show  the form 
 
                 const form = document.getElementById('edit-book-form');
@@ -125,7 +123,7 @@ class CatalogueController {
                 console.log (bookId)
 
                 // gets the rest of the book details to send to view.setplaceholder 
-                const book = this.model.searchByBookId(bookId)
+                const book = this.model.findBookById(bookId)
                 this.view.showForm('view-book-form'); // show  the form 
 
                 const form = document.getElementById('view-book-form');

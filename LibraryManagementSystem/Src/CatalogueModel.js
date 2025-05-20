@@ -19,8 +19,8 @@ class CatalogueModel {
             console.log("Book is undefined");
             return;
         }
-        const existingBookISBN = this.searchByISBN(book.ISBN);
-        const existingBookId = this.searchByBookId(book.bookId);
+        const existingBookISBN = this.findBookByISBN(book.ISBN);
+        const existingBookId = this.findBookById(book.bookId);
         
         if (existingBookISBN || existingBookId) {
             console.log("Book already exists in the library.");
@@ -33,7 +33,7 @@ class CatalogueModel {
     }
     // updateBook uses the setters to update the book object with the new values from the controller, then saves the books.
     editBook(bookId, updates) {
-        let book = this.searchByBookId(bookId);
+        let book = this.findBookById(bookId);
         if (book) {
             Object.assign(book, updates);
             this.saveBooks()
@@ -47,7 +47,7 @@ class CatalogueModel {
     deleteBook(bookId) {
         console.log(`bookID ${bookId}`);
         console.log("bookId type  ", typeof bookId);
-        let book = this.searchByBookId(bookId);
+        let book = this.findBookById(bookId);
         if (book) {   
             console.log(book)       
             const removedBook = book.title;
@@ -97,42 +97,45 @@ class CatalogueModel {
 
     // Filter books based on query
     searchBooks(query) {
-        const fuzinessness = 5
-        const queryWords = String(query).toLowerCase().replace(/[^\w\s]/g, '').trim().split(/\s+/)
+        const fuzinessness = 2;
+        const queryWords = String(query).toLowerCase().replace(/[^\w\s]/g, '').trim().split(/\s+/);
 
-        return this.books.filter(book => {
-            const title = book.title.toLowerCase().replace(/[^\w\s]/g, '').trim()
-            const author = book.author.toLowerCase().replace(/[^\w\s]/g, '').trim()
-            const genre = book.genre.toLowerCase().replace(/[^\w\s]/g, '').trim()
+        let filteredBooks = this.books;
+
+        queryWords.forEach((word, index) => {
+            filteredBooks = filteredBooks.filter(book => {
 
             if (!isNaN(query) && Number(query) === Number(book.bookId) || Number(query) === Number(book.ISBN) ) {
-                return true;
-            }
-            if (queryWords.some(word =>
-                title.includes(word) ||
-                author.includes(word) ||
-                genre.includes(word)
-            )) {
-                return true
-            }
-            return queryWords.some(word => {
-                const titleWords = book.title.split(/\s+/);  
-                const authorWords = book.author.split(/\s+/);
-                const genreWords = book.genre.split(/\s+/);
+                    return true;
+                }
+                const titleWords = book.title.toLowerCase().split(/\s+/);
+                const authorWords = book.author.toLowerCase().split(/\s+/);
+                const genreWords = book.genre.toLowerCase().split(/\s+/);
 
-                const titleDistance = Math.min(...titleWords.map(titleWord => this.calculateLevenshteinDistance(word, titleWord)));
-                const authorDistance = Math.min(...authorWords.map(authorWord => this.calculateLevenshteinDistance(word, authorWord)));
-                const genreDistance = Math.min(...genreWords.map(genreWord => this.calculateLevenshteinDistance(word, genreWord)));
+                // Exact match for full query (strongest match)
+                if (index === 0 && (book.title.toLowerCase().includes(query) ||
+                                    book.author.toLowerCase().includes(query) ||
+                                    book.genre.toLowerCase().includes(query))) {
+                    return true;
+                }
 
-                
-                return titleDistance <= fuzinessness || authorDistance <= fuzinessness || genreDistance <= fuzinessness;
+                // Match individual words progressively narrowing results
+                return titleWords.includes(word) || 
+                    authorWords.includes(word) || 
+                    genreWords.includes(word) || 
+                    Math.min(...titleWords.map(titleWord => this.calculateLevenshteinDistance(word, titleWord))) <= fuzinessness ||
+                    Math.min(...authorWords.map(authorWord => this.calculateLevenshteinDistance(word, authorWord))) <= fuzinessness ||
+                    Math.min(...genreWords.map(genreWord => this.calculateLevenshteinDistance(word, genreWord))) <= fuzinessness;
             });
         });
+
+        return filteredBooks;
     }
-    searchByBookId(query) {
+
+    findBookById(query) {
         return this.books.find(book => Number(book.bookId) === Number(query));
     }
-    searchByISBN(query) {
+    findBookByISBN(query) {
         return this.books.find(book => Number(book.ISBN) === Number(query));
     }
 
