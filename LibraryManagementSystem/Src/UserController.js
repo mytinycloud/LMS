@@ -17,10 +17,18 @@ class UserManagementController{
     this.view.updateUserTable(this.model.getUsers());  // Initial render
     this.addEventListenersToButtons();  // Add event listeners to buttons
     }
+    randomId() {
+        const randomnumber = Math.random().toString(36).substring(2, 15);
+        console.log(randomnumber)
+        exisitngIds = userIds.findUserById(randomnumber);
+        if (userIds) {this.randomId()}
+        return randomnumber;
+        
 
+    }
     handleAddUser(event) {
         event.preventDefault();
-        let userId = this.model.getUsers().length + 1;
+
         // Get values from the add form
         const addForm = document.getElementById('add-user-form');
         const name = addForm.querySelector('input[name="name"]').value;
@@ -28,7 +36,16 @@ class UserManagementController{
         const password = addForm.querySelector('input[name="password"]').value;
         const roleField = addForm.querySelector('select[name="role"]')
         const selectedRole = roleField.options[roleField.selectedIndex].value; 
-        const newUser = new User(userId, name, email, password, selectedRole,);
+        
+        
+
+
+        let membershipId = null;
+
+        if  (selectedRole === "Member") {
+             membershipId = this.model.getMembers().length + 1;
+        }
+        const newUser = new User(userId, name, email, password, selectedRole, membershipId);
         
         this.model.addUser(newUser);
     
@@ -46,11 +63,11 @@ class UserManagementController{
 
         const name = editForm.querySelector('input[name="name"]').value;
         const email = editForm.querySelector('input[name="email"]').value;
-        const password = editForm.querySelector('password[name="password"]').value;
+        const password = editForm.querySelector('input[name="password"]').value;
         const roleField = editForm.querySelector('select[name="role"]')
         const selectedRole = roleField.options[roleField.selectedIndex].value;
 
-
+        let updatedUser;
         if (selectedRole === "Member") {
             const membershipId = this.model.findUserById(userId).membershipId;
             updatedUser = new User(userId, name, email, password, selectedRole, membershipId);
@@ -67,7 +84,8 @@ class UserManagementController{
     
     handleDeleteUser(event) {
         const userId = event.currentTarget.getAttribute('data-user-id');  // Gets userId of the user linked to the delete button
-        if (confirm("Are you sure you want to delete this user?")) {
+        const user = findUserById(userId)
+        if (confirm(`Are you sure you want to delete ${user.name} ?`)) {
             this.model.deleteUser(userId);  // delete user from model
             this.view.updateUserTable(this.model.getUsers());  // update view
             this.addEventListenersToButtons();  // Re-add event listeners as the table has been refreshed

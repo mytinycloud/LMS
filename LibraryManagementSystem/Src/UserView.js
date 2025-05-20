@@ -25,7 +25,7 @@ class UserView {
         const form = document.getElementById(modalId)
         const nameField = form.querySelector('input[name="name"]');
         const emailField = form.querySelector('input[name="email"]');
-        const passwordField = form.querySelector('password[name="password"]');
+        const passwordField = form.querySelector('input[name="password"]');
         const roleField = form.querySelector('select[name="role"]');
   
         // Set values if fields exist
@@ -45,10 +45,10 @@ class UserView {
         users.forEach(user => {
             const row = document.createElement("tr");
             row.innerHTML = `
-                <td>${user.userId}</td>
+                <td>${user.membershipId || ''}</td> 
                 <td>${user.userName}</td>
                 <td>${user.email}</td>
-                <td>${user.role}</td>   
+                <td>${user.role}</td>
                 <td class="btn-group">
                     <button class="edit-btn" data-user-id="${user.userId}"><img class="btnimg" src="../assets/Edit.png"></button>
                     <button class="delete-btn" data-user-id="${user.userId}"><img class="btnimg" src="../assets/Delete.png"></button>

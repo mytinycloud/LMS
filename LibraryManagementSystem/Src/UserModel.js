@@ -52,8 +52,7 @@ class UserManagement {
         this.allUsers.push(newUser);
         this.saveUsers();
         if (user.role === "Member") {
-            let membershipId = this.allMembers.length + 1;
-            console.log("adding member with id", membershipId);
+            console.log("adding member with id", user.membershipId);
             let member = new Member(user.userId, user.userName, user.email, user.password, user.role, membershipId);
             this.allMembers.push(member);
             this.saveMembers()

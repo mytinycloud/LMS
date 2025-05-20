@@ -5,6 +5,8 @@ class CatalogueController {
 
     // DOM Elements
     this.searchInput = document.getElementById('search');
+
+    
     
 
     // Bind event listeners to the correct form IDs
@@ -70,7 +72,8 @@ class CatalogueController {
     handleDeleteBook(event) {
         console.log("delete clicked")
         const bookId = event.currentTarget.getAttribute('data-book-id'); 
-        if (bookId) {
+        const book = searchByBookId(bookId)
+        if (confirm(`are you sure you want to delete ${book.title}`)) {
             console.log('got id')
             this.model.deleteBook(bookId);
             this.view.updateBookTable(this.model.getBooks());
