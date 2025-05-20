@@ -96,9 +96,9 @@ class UserManagement {
         }
     }
 
+    // levenshtein distance algorithm 
     calculateLevenshteinDistance(searchTerm, bookIdentifier) {
 
-        // Levenstein distance algorithm 
         const searchTermLength = searchTerm.length;
         const bookIdentifierLength = bookIdentifier.length;
 
@@ -137,29 +137,29 @@ class UserManagement {
         const fuzinessness = 5
         const queryWords = String(query).toLowerCase().replace(/[^\w\s]/g, '').trim().split(/\s+/)
 
-        return this.allUsers.filter(user => {
-            const userName = user.userName.toLowerCase().replace(/[^\w\s]/g, '').trim()
-            const email = user.email.toLowerCase().replace(/[^\w\s]/g, '').trim()
+        let  fliteredUsers = this.allUsers
 
-            if (!isNaN(query) && Number(query) === Number(user.userId)) {
-                return true;
-            }
-            if (queryWords.some(word =>
-                userName.includes(word) ||
-                email.includes(word)
-            )) {
-                return true
-            }
-            return queryWords.some(word => {
-                const names = user.userName.split(/\s+/);  
-                const emailparts = user.email.split(/\s+/);
+        queryWords.forEach((word, index) => {
+            fliteredUsers = fliteredUsers.filter(user => {
 
-                const nameDistance = Math.min(...names.map(name => this.calculateLevenshteinDistance(word, name)));
-                const emailDistance = Math.min(...emailparts.map(emailpart => this.calculateLevenshteinDistance(word, emailpart)));
-                
-                return nameDistance <= fuzinessness || emailDistance <= fuzinessness;
+                if (!isNaN(query) && Number(query) === Number(user.userId)) {
+                    return true;
+                }
+
+                const names = user.userName.toLowerCase().split(/\s+/);  
+                const emailparts = user.email.toLowerCase().split(/\s+/);
+
+                if (index === 0 && (user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query))) { 
+                    return true
+                }
+                return names.includes(word) || 
+                email.includes(word) || 
+                Math.min(...names.map(name => this.calculateLevenshteinDistance(word, name))) <= fuzinessness || 
+                Math.min(...emailparts.map(emailpart => this.calculateLevenshteinDistance(word, emailpart))) <= fuzinessness
             });
+ 
         });
+        return fliteredUsers;
     }
 
     findUserById(query) {
