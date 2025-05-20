@@ -1,7 +1,7 @@
 class UserView {
     constructor() {
         this.userTableBody = document.querySelector('tbody');
-        window.catalogueView = this;
+        window.userView = this;
     }
 
     showForm(modalId) {
@@ -25,12 +25,14 @@ class UserView {
         const form = document.getElementById(modalId)
         const nameField = form.querySelector('input[name="name"]');
         const emailField = form.querySelector('input[name="email"]');
+        const passwordField = form.querySelector('password[name="password"]');
         const roleField = form.querySelector('select[name="role"]');
   
         // Set values if fields exist
-        if (nameField) nameField.value = user.userName || "";
+        if (nameField) nameField.value = user.userName;
         if (emailField) emailField.value = user.email;
-        if (roleField) roleField.value = user.role;
+        if (passwordField) passwordField.value = user.password;
+        if (roleField) roleField.value ? "Member" : "Librarian";
     }
 
     updateUserTable(users) {

@@ -43,7 +43,8 @@ class UserManagement {
     }
     addUser(user) {
         const existingUser = this.findUserById(user.userId);
-        if (existingUser) {
+        const existingEmail = this.findUserByEmail(user.email);
+        if (existingUser || existingEmail) {
             console.log("User already exists");
             return;
         }
@@ -96,6 +97,43 @@ class UserManagement {
         }
     }
 
+    calculateLevenshteinDistance(searchTerm, bookIdentifier) {
+
+        // Levenstein distance algorithm 
+        const searchTermLength = searchTerm.length;
+        const bookIdentifierLength = bookIdentifier.length;
+
+        let distanceMatrix = Array(searchTermLength + 1);
+
+        for (let row = 0; row <= searchTermLength; row++) {
+            distanceMatrix[row] = Array(bookIdentifierLength + 1);
+        }
+
+        for (let row = 0; row <= searchTermLength; row++) {
+            distanceMatrix[row][0] = row;
+        }
+
+        for (let column = 0; column <= bookIdentifierLength; column++) {
+            distanceMatrix[0][column] = column;
+        }
+
+        for (let row = 1; row <= searchTermLength; row++) {
+            for (let column = 1; column <= bookIdentifierLength; column++) {
+                if (searchTerm[row - 1] === bookIdentifier[column - 1]) {
+
+                    distanceMatrix[row][column] = distanceMatrix[row - 1][column - 1];
+                } else {
+                    distanceMatrix[row][column] = Math.min(
+                        distanceMatrix[row - 1][column] + 1, 
+                        distanceMatrix[row][column - 1] + 1, 
+                        distanceMatrix[row - 1][column - 1] + 1 
+                    );
+                }
+            }
+        }
+        return distanceMatrix[searchTermLength][bookIdentifierLength];
+    }
+
     searchUsers(query) {
         const fuzinessness = 5
         const queryWords = String(query).toLowerCase().replace(/[^\w\s]/g, '').trim().split(/\s+/)
@@ -117,8 +155,8 @@ class UserManagement {
                 const names = user.userName.split(/\s+/);  
                 const emailparts = user.email.split(/\s+/);
 
-                const nameDistance = Math.min(...names.map(name => CatalogueModel.calculateLevenshteinDistance(word, name)));
-                const emailDistance = Math.min(...emailparts.map(emailpart => CatalogueModel.calculateLevenshteinDistance(word, emailpart)));
+                const nameDistance = Math.min(...names.map(name => this.calculateLevenshteinDistance(word, name)));
+                const emailDistance = Math.min(...emailparts.map(emailpart => this.calculateLevenshteinDistance(word, emailpart)));
                 
                 return nameDistance <= fuzinessness || emailDistance <= fuzinessness;
             });
@@ -126,7 +164,11 @@ class UserManagement {
     }
 
     findUserById(query) {
-        return this.allUsers.find(user => user.userId === query);
+        return this.allUsers.find(user => Number(user.userId) === Number(query));
+    }
+
+    findUserByEmail(query) {
+        return this.allUsers.find(user => user.email === query);
     }
 
     getUsers() {
@@ -165,4 +207,3 @@ class Librarian extends User {
         super(userId, userName, email, password, role);
     }
 }
-

@@ -27,7 +27,7 @@
 
         <div id="add-user-form" class="modal">
             <div class="modal-content">
-                <span class="close-button" onclick="catalogueView.hideForm('add-user-form')">&times;</span>
+                <span class="close-button" onclick="userView.hideForm('add-user-form')">&times;</span>
                 <h2>Add New User</h2>
                 <form id="add-user-form">
                     <div class="form-group">
@@ -56,7 +56,7 @@
 
         <div id="edit-user-form" class="modal">
             <div class="modal-content">
-                <span class="close-button" onclick="catalogueView.hideForm('edit-user-form')">&times;</span>
+                <span class="close-button" onclick="userView.hideForm('edit-user-form')">&times;</span>
                 <h2>Edit User</h2>
                 <form id="edit-user-form">
                     <div class="form-group">
@@ -79,7 +79,7 @@
                         </select>
                     </div>
 
-                    <button type="submit">Add User</button>
+                    <button type="submit">Edit User</button>
                 </form>
             </div>
         </div>
@@ -121,5 +121,6 @@
     <script src="../Src/UserModel.js"></script> 
     <script src="../Src/UserController.js"></script>
     <script src="../Src/UserView.js"></script>
+    <script src="../Src/CatalogueModel.js"></script>
 </body>
 </html>
