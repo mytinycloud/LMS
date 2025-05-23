@@ -52,6 +52,7 @@ th, td {
     padding: 8px 10px;
     text-align: left;
     border-bottom: 1px solid var(--border-color);
+
 }
 
 th.actions-th, td:last-child {
@@ -62,6 +63,16 @@ th.actions-th, td:last-child {
 th {
     background-color: var(--primary-color);
     color: var(--light-text-color);
+    
+}
+th:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+th:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
 }
 
 .actions-th {

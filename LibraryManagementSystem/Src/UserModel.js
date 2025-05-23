@@ -2,45 +2,27 @@
 class UserManagement { 
     constructor() {
         this.allUsers = this.loadUsers();
-        this.allMembers = this.loadMembers();
-        this.allLibrarians = this.loadLibrarians();
     }
-    loadData(key, type) {
-        const dataJSON = localStorage.getItem(key);
-        const ParsedData = dataJSON ? JSON.parse(dataJSON) : [];
-        return ParsedData.map(item => new type(...Object.values(item)));
-    }
+    
     loadUsers() {
-        return this.loadData('Users', User);
-        //const userJSON = localStorage.getItem('users');
-        //const user = userJSON ? JSON.parse(userJSON) : [];
-            //return user.map(user => new User(user.userId, user.userName, user.email, user.password, user.role));
-    }
-    loadMembers() {
-       return this.loadData('Members', Member);
-        //const memberJSON = localStorage.getItem('members');
-        //const member = memberJSON ? JSON.parse(memberJSON) : [];
-            //return member.map(member => new Member(member.userId, member.userName, member.email, member.password, member.role, member.membershipId));
-    }
-    loadLibrarians() {
-       return this.loadData('Librarians', Librarian);
-       // const librarianJSON = localStorage.getItem('librarians');
-        //const librarian = librarianJSON ? JSON.parse(librarianJSON) : [];
-         //   return librarian.map(librarian => new Librarian(librarian.userId, librarian.userName, librarian.email, librarian.password, librarian.role));
-    }
+        const userJSON = localStorage.getItem('users');
+        const user = userJSON ? JSON.parse(userJSON) : [];
+            return user.map(user => new User(user.userId, user.userName, user.email, user.password, user.role));
+    } 
  
     saveUsers() {
         console.log("user saved as", this.allUsers)
         localStorage.setItem('Users', JSON.stringify(this.allUsers));
     }
-    saveMembers() {
-        console.log("member saved")
-        localStorage.setItem('Members', JSON.stringify(this.allMembers));
+
+    randomId() {
+        const randomnumber = Math.random().toString(36).substring(2, 15);
+        console.log(randomnumber)
+        let exisitngIds = this.model.findUserById(randomnumber);
+        if (exisitngIds) {return this.randomId()}
+            return randomnumber;
     }
-    saveLibrarians() {
-        console.log("librarian saved")
-        localStorage.setItem('Librarians', JSON.stringify(this.allLibrarians));
-    }
+
     addUser(user) {
         const existingUser = this.findUserById(user.userId);
         const existingEmail = this.findUserByEmail(user.email);
@@ -48,31 +30,15 @@ class UserManagement {
             console.log("User already exists");
             return;
         }
-        let newUser = new User(user.userId, user.userName, user.email, user.password, user.role);
+        let userId = this.randomId() 
+        let borrowedBooks = []
+        let newUser = new User(userId, user.userName, user.email, user.password, user.role, borrowedBooks);
         this.allUsers.push(newUser);
         this.saveUsers();
-        if (user.role === "Member") {
-            console.log("adding member with id", user.membershipId);
-            let member = new Member(user.userId, user.userName, user.email, user.password, user.role, membershipId);
-            this.allMembers.push(member);
-            this.saveMembers()
-        }
-        if (user.role === "Librarian") {
-            this.allLibrarians.push(newUser);
-            this.saveLibrarians();
-        }
     }
           
     editUser(userId, updates) {
-        let user = this.findUserById(userId);
-        Object.assign(user, updates)
-        if (user.membershipId) {
-            this.saveMembers();
-        }else if (user.role === "Librarian") {
-            this.saveLibrarians();
-        }
-        let newUser = new User(user.userId, user.userName, user.email, user.password, user.role);
-        Object.assign(user, newUser);
+        Object.assign(userId, updates);
         this.saveUsers();
     }
 
@@ -173,36 +139,16 @@ class UserManagement {
     getUsers() {
         return this.allUsers;
     }
-
-    getMembers() {
-        return this.allMembers;
-    } 
-
-    getLibrarians() {
-        return this.allLibrarians;
-    }
 }
 
 class User {
-    constructor(userId, userName, email, password, role ){
+    constructor(userId, userName, email, password, role, borrowedBooks ){
         this.userId = userId;
         this.userName = userName;
         this.email = email;
         this.password = password;
         this.role = role;
-    }
-}
-
-class Member extends User {
-    constructor(userId, userName, email, password, role, membershipId, borrowedBooks= []){
-        super(userId, userName, email, password, role);
-        this.membershipId = membershipId;
         this.borrowedBooks = borrowedBooks;
     }
 }
 
-class Librarian extends User {
-    constructor(userId, userName, email, password, role){
-        super(userId, userName, email, password, role);
-    }
-}

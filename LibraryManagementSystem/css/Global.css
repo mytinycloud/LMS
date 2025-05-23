@@ -93,6 +93,11 @@ nav a.active {
     background-color: var(--primary-color);
     color: var(--soft-background);
 }
+nav :nth-last-child(1) {
+    margin-left: auto;
+
+
+}
 
 /*  FORM ELEMENTS  */
 

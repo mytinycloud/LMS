@@ -17,35 +17,19 @@ class UserManagementController{
     this.view.updateUserTable(this.model.getUsers());  // Initial render
     this.addEventListenersToButtons();  // Add event listeners to buttons
     }
-    randomId() {
-        const randomnumber = Math.random().toString(36).substring(2, 15);
-        console.log(randomnumber)
-        exisitngIds = userIds.findUserById(randomnumber);
-        if (userIds) {this.randomId()}
-        return randomnumber;
-        
 
-    }
     handleAddUser(event) {
         event.preventDefault();
 
         // Get values from the add form
         const addForm = document.getElementById('add-user-form');
-        const name = addForm.querySelector('input[name="name"]').value;
+        const userName = addForm.querySelector('input[name="name"]').value;
         const email = addForm.querySelector('input[name="email"]').value;
         const password = addForm.querySelector('input[name="password"]').value;
         const roleField = addForm.querySelector('select[name="role"]')
         const selectedRole = roleField.options[roleField.selectedIndex].value; 
         
-        
-
-
-        let membershipId = null;
-
-        if  (selectedRole === "Member") {
-             membershipId = this.model.getMembers().length + 1;
-        }
-        const newUser = new User(userId, name, email, password, selectedRole, membershipId);
+        const newUser = {useName:userName, email:email, password:password, role:selectedRole}
         
         this.model.addUser(newUser);
     
@@ -84,7 +68,7 @@ class UserManagementController{
     
     handleDeleteUser(event) {
         const userId = event.currentTarget.getAttribute('data-user-id');  // Gets userId of the user linked to the delete button
-        const user = findUserById(userId)
+        const user = this.model.findUserById(userId)
         if (confirm(`Are you sure you want to delete ${user.name} ?`)) {
             this.model.deleteUser(userId);  // delete user from model
             this.view.updateUserTable(this.model.getUsers());  // update view
@@ -102,6 +86,8 @@ class UserManagementController{
         }
         this.addEventListenersToButtons();
     }
+
+    
 
     addEventListenersToButtons() {
         // Add listeners to delete buttons

@@ -50,8 +50,10 @@ class UserView {
                 <td>${user.email}</td>
                 <td>${user.role}</td>
                 <td class="btn-group">
+                    <button class-"login-btn" data-user-id="${user.userId}">Login</button>
                     <button class="edit-btn" data-user-id="${user.userId}"><img class="btnimg" src="../assets/Edit.png"></button>
                     <button class="delete-btn" data-user-id="${user.userId}"><img class="btnimg" src="../assets/Delete.png"></button>
+                    
                 </td>
 
             `;
