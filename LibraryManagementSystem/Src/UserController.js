@@ -29,7 +29,7 @@ class UserManagementController{
         const roleField = addForm.querySelector('select[name="role"]')
         const selectedRole = roleField.options[roleField.selectedIndex].value; 
         
-        const newUser = {useName:userName, email:email, password:password, role:selectedRole}
+        const newUser = {userName:userName, email:email, password:password, role:selectedRole}
         
         this.model.addUser(newUser);
     
@@ -51,13 +51,8 @@ class UserManagementController{
         const roleField = editForm.querySelector('select[name="role"]')
         const selectedRole = roleField.options[roleField.selectedIndex].value;
 
-        let updatedUser;
-        if (selectedRole === "Member") {
-            const membershipId = this.model.findUserById(userId).membershipId;
-            updatedUser = new User(userId, name, email, password, selectedRole, membershipId);
-        }else if (selectedRole === "Librarian") {
-            updatedUser = new User(userId, name, email, password, selectedRole); 
-        }
+        const updatedUser = {userName: name, email: email, password: password, role: selectedRole};  // update user for model
+
         this.model.editUser(userId, updatedUser);  // update model  
     
         // Update view
@@ -69,7 +64,7 @@ class UserManagementController{
     handleDeleteUser(event) {
         const userId = event.currentTarget.getAttribute('data-user-id');  // Gets userId of the user linked to the delete button
         const user = this.model.findUserById(userId)
-        if (confirm(`Are you sure you want to delete ${user.name} ?`)) {
+        if (confirm(`Are you sure you want to delete ${user.userName} ?`)) {
             this.model.deleteUser(userId);  // delete user from model
             this.view.updateUserTable(this.model.getUsers());  // update view
             this.addEventListenersToButtons();  // Re-add event listeners as the table has been refreshed
@@ -87,6 +82,20 @@ class UserManagementController{
         this.addEventListenersToButtons();
     }
 
+    handleLogin(event) {
+        let userId;
+        let user;
+
+        if (event) {
+            userId = event.currentTarget.getAttribute('data-user-id');  // Gets userId of the user linked to the login button
+            user = this.model.findUserById(userId)
+            this.model.saveLoggedInUser(user)
+        }else {
+            user = this.model.getLoggedInUser(); // If no event, get the logged in user
+        }
+        console.log('found user')
+        this.view.updateProfileLink(user);  // Update the profile link in the view          
+    }
     
 
     addEventListenersToButtons() {
@@ -112,6 +121,15 @@ class UserManagementController{
                 form.setAttribute('data-editing-id', userId);
                 console.log(user)
                 this.view.setplaceholder(user, 'edit-user-form');
+            });
+        })
+        console.log('login buttons')
+        const loginButtons = document.querySelectorAll('.login-btn');
+        console.log(loginButtons)
+        loginButtons.forEach(button => {
+            button.addEventListener('click', (event) => {
+                console.log('login clicked'); // Move this line here
+                this.handleLogin(event);
             });
         })
     }

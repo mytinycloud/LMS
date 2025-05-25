@@ -1,6 +1,7 @@
 class UserView {
     constructor() {
         this.userTableBody = document.querySelector('tbody');
+        this
         window.userView = this;
     }
 
@@ -20,7 +21,18 @@ class UserView {
             modal.style.display = "none";
         }
     }
-    
+    updateProfileLink(user) {
+        const loggedInUser = user
+        console.log("Updating profile link for user:", loggedInUser);
+        const profileLink = document.getElementById('profileLink');
+        if (user) {
+            profileLink.style.display = "inline"; // Show the profile link
+            profileLink.textContent = `Welcome ${loggedInUser.userName}`;
+            console.log("Profile link updated:", profileLink.textContent);
+        } else {
+            console.error("Profile link element not found");
+        }
+    }
     setplaceholder(user, modalId) {
         const form = document.getElementById(modalId)
         const nameField = form.querySelector('input[name="name"]');
@@ -45,15 +57,14 @@ class UserView {
         users.forEach(user => {
             const row = document.createElement("tr");
             row.innerHTML = `
-                <td>${user.membershipId || ''}</td> 
+                <td>${user.userId}</td> 
                 <td>${user.userName}</td>
                 <td>${user.email}</td>
                 <td>${user.role}</td>
                 <td class="btn-group">
-                    <button class-"login-btn" data-user-id="${user.userId}">Login</button>
                     <button class="edit-btn" data-user-id="${user.userId}"><img class="btnimg" src="../assets/Edit.png"></button>
                     <button class="delete-btn" data-user-id="${user.userId}"><img class="btnimg" src="../assets/Delete.png"></button>
-                    
+                    <button class="login-btn" data-user-id="${user.userId}">Login</button>
                 </td>
 
             `;

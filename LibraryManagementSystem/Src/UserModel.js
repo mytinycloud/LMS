@@ -7,26 +7,36 @@ class UserManagement {
     loadUsers() {
         const userJSON = localStorage.getItem('users');
         const user = userJSON ? JSON.parse(userJSON) : [];
-            return user.map(user => new User(user.userId, user.userName, user.email, user.password, user.role));
+            return user.map(user => new User(user.userId, user.userName, user.email, user.password, user.role, user.borrowedBooks));
     } 
  
     saveUsers() {
         console.log("user saved as", this.allUsers)
-        localStorage.setItem('Users', JSON.stringify(this.allUsers));
+        localStorage.setItem('users', JSON.stringify(this.allUsers));
+    }
+
+    saveLoggedInUser(user) {
+        console.log('saved user') 
+        localStorage.setItem('currentUser', JSON.stringify(user));
+    }
+
+    loadLoggedInUser() {
+        const userJSON = localStorage.getItem('currentUser');
+        const user = userJSON ? JSON.parse(userJSON): '';
+            return user = new User(user.userId, user.userName, user.email, user.password, user.role, user.borrowedBooks);
     }
 
     randomId() {
         const randomnumber = Math.random().toString(36).substring(2, 15);
         console.log(randomnumber)
-        let exisitngIds = this.model.findUserById(randomnumber);
-        if (exisitngIds) {return this.randomId()}
+        let existingIds = this.findUserById(randomnumber);
+        if (existingIds) {return randomId()}
             return randomnumber;
     }
 
     addUser(user) {
-        const existingUser = this.findUserById(user.userId);
         const existingEmail = this.findUserByEmail(user.email);
-        if (existingUser || existingEmail) {
+        if (existingEmail) {
             console.log("User already exists");
             return;
         }
@@ -115,7 +125,7 @@ class UserManagement {
                 const names = user.userName.toLowerCase().split(/\s+/);  
                 const emailparts = user.email.toLowerCase().split(/\s+/);
 
-                if (index === 0 && (user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query))) { 
+                if (index === 0 && (names.toLowerCase().includes(query) || emailparts.toLowerCase().includes(query))) { 
                     return true
                 }
                 return names.includes(word) || 
@@ -129,11 +139,23 @@ class UserManagement {
     }
 
     findUserById(query) {
-        return this.allUsers.find(user => Number(user.userId) === Number(query));
+        let user =  this.allUsers.find(user => user.userId === query);
+        if (user) {
+            return user;
+        } else {
+            console.log(`User with ID ${query} not found.`);
+            return false;
+        }
     }
 
     findUserByEmail(query) {
-        return this.allUsers.find(user => user.email === query);
+        let user = this.allUsers.find(user => user.email === query);
+        if (user) {
+            return user;
+        } else {
+            console.log(`User with email ${query} not found.`);
+            return false;
+        }
     }
 
     getUsers() {
