@@ -96,7 +96,13 @@ nav a.active {
 nav :nth-last-child(1) {
     margin-left: auto;
 
-
+}
+nav .profileimg {
+    width: 25px;
+    height: 25px;
+    margin-left: 10px;
+    border-radius: 50%;
+    background-color: var(--background-color);
 }
 
 /*  FORM ELEMENTS  */

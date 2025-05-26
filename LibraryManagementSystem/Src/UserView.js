@@ -1,7 +1,6 @@
 class UserView {
     constructor() {
         this.userTableBody = document.querySelector('tbody');
-        this
         window.userView = this;
     }
 
@@ -27,7 +26,7 @@ class UserView {
         const profileLink = document.getElementById('profileLink');
         if (user) {
             profileLink.style.display = "inline"; // Show the profile link
-            profileLink.textContent = `Welcome ${loggedInUser.userName}`;
+            profileLink.innerHTML = `${loggedInUser.userName} <img class="profileimg" src="../assets/user.png">`
             console.log("Profile link updated:", profileLink.textContent);
         } else {
             console.error("Profile link element not found");

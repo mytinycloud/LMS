@@ -17,15 +17,15 @@
         <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
-                <li><a href="catalogue.html">Catalogue</a></li>
                 <li><a href="users.html">User Management</a></li>
-                <li><a href="Profile.html" id="profileLink"></a></li>
+                <li><a href="catalogue.html">Catalogue</a></li>
+                
+                <li><a href="Profile.html" id="profileLink" style='display: none;'></a></li>
             </ul>
         </nav>
 
         <div class="welcome-section">
             <h2>Welcome to the Library Management System</h2>
-            <p>This system provides a comprehensive solution for managing a library's resources, users, and operations.</p>
             <p>Use the navigation above to access different sections of the system.</p>
             
             <div class="overview">
@@ -52,7 +52,6 @@
         <div class="quick-links">
             <a href="books.html" class="quick-link">Add New Book</a>
             <a href="users.html" class="quick-link">Register User</a>
-            <a href="Profile.html" class="quick-link">user Pofile</a>
             <a href="catalogue.html" class="quick-link">Search Catalogue</a>
         </div>
 
@@ -60,5 +59,11 @@
             <p> 2025 BCDE102 James Hart</p>
         </footer>
     </div>
+    <script src="../Src/CatalogueModel.js"></script> 
+    <script src="../Src/CatalogueController.js"></script>
+    <script src="../Src/CatalogueView.js"></script>
+    <script src="../Src/UserModel.js"></script>
+    <script src="../Src/UserController.js"></script>
+    <script src="../Src/UserView.js"></script>
 </body>
 </html>

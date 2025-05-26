@@ -22,7 +22,7 @@ class UserManagement {
 
     loadLoggedInUser() {
         const userJSON = localStorage.getItem('currentUser');
-        const user = userJSON ? JSON.parse(userJSON): '';
+        let user = userJSON ? JSON.parse(userJSON): '';
             return user = new User(user.userId, user.userName, user.email, user.password, user.role, user.borrowedBooks);
     }
 
@@ -55,21 +55,10 @@ class UserManagement {
     deleteUser(userId) {
         let user = this.findUserById(userId);
         let removedUser = user.userName;
-        if (user) {        
-            //remove removed user from members
-            if (user.role === "Member") {
-                this.allMembers = this.allMembers.filter(member => Number(member.userId) !== Number(userId));
-                this.saveMembers();
-            }
-            // remove removed user from librarians
-            if (user.role === "Librarian") {
-                this.allLibrarians = this.allLibrarians.filter(librarian => Number(librarian.userId) !== Number(userId));
-                this.saveLibrarians();
-            }
-            this.allUsers = this.allUsers.filter(user => Number(user.userId) !== Number(userId));
-            this.saveUsers();
-            console.log(`"${removedUser}" was removed.`);
-        }
+        this.allUsers = this.allUsers.filter(user => user.userId !== userId);
+        this.saveUsers();
+        console.log(`"${removedUser}" was removed.`);
+        
     }
 
     // levenshtein distance algorithm 
@@ -160,6 +149,9 @@ class UserManagement {
 
     getUsers() {
         return this.allUsers;
+    }
+    getLoggedInUser() {
+        return this.loadLoggedInUser();
     }
 }
 

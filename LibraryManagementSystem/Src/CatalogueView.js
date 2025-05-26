@@ -23,9 +23,9 @@ class CatalogueView {
     
     setplaceholder(book, modalId) {
         if (!book) {
-        console.error("Book data not found in setplaceholder.");
-        return; // Exit early to prevent errors
-}
+            console.error("Book data not found in setplaceholder.");
+            return; // Exit early to prevent errors
+        }
         const form = document.getElementById(modalId)
         const bookIdField = form.querySelector('input[name="bookId"]');
         const titleField = form.querySelector('input[name="title"]');
@@ -44,7 +44,7 @@ class CatalogueView {
         if (genreField) genreField.value = book.genre;
         if (isbnField) isbnField.value = book.ISBN;
         if (availabilityField) availabilityField.value ? "Available" : "Not Available";
-        if (availabilityTextField) availabilityTextField.value = book.availability ? "Available" : "Not Available" ;
+        if (availabilityTextField) availabilityTextField.value = book.availability ? "Available" : "Not Available";
         if (locationField) locationField.value = book.location || "";
         if (descriptionField) descriptionField.value = book.description || "";
     }

@@ -5,13 +5,18 @@ class CatalogueController {
 
     // DOM Elements
     this.searchInput = document.getElementById('search');
-    
+
 
     // Bind event listeners to the correct form IDs
-    document.getElementById('add-book-form').addEventListener('submit', this.handleAddBook.bind(this));
-    document.getElementById('edit-book-form').addEventListener('submit', this.handleEditBook.bind(this));
-    
-    this.searchInput.addEventListener('input', this.handleSearch.bind(this));
+    if (document.getElementById("add-book-form")) {
+        document.getElementById('add-book-form').addEventListener('submit', this.handleAddBook.bind(this));
+    }
+    if (document.getElementById("edit-book-form")) {
+        document.getElementById('edit-book-form').addEventListener('submit', this.handleEditBook.bind(this));
+    }
+    if (this.searchInput){
+        this.searchInput.addEventListener('input', this.handleSearch.bind(this));
+    }
 
     this.view.updateBookTable(this.model.getBooks());  // Initial render
     this.addEventListenersToButtons();  // Add event listeners to buttons

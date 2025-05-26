@@ -8,13 +8,20 @@ class UserManagementController{
     
 
     // Bind event listeners to the correct form IDs
-    document.getElementById("add-user-button").addEventListener("click", () => {this.view.showForm("add-user-form")});
-    document.getElementById('add-user-form').addEventListener('submit', this.handleAddUser.bind(this));
-    document.getElementById('edit-user-form').addEventListener('submit', this.handleEditUser.bind(this));
-
-    this.searchInput.addEventListener('input', this.handleSearch.bind(this));
-
+    if (document.getElementById("add-user-button")) {
+        document.getElementById("add-user-button").addEventListener("click", () => {this.view.showForm("add-user-form")});
+    }
+    if (document.getElementById("add-user-form")) {
+        document.getElementById('add-user-form').addEventListener('submit', this.handleAddUser.bind(this));
+    }
+    if (document.getElementById('edit-user-form')) {
+        document.getElementById('edit-user-form').addEventListener('submit', this.handleEditUser.bind(this));
+    }
+    if (document.getElementById('input')) {
+        this.searchInput.addEventListener('input', this.handleSearch.bind(this));
+    }
     this.view.updateUserTable(this.model.getUsers());  // Initial render
+    this.view.updateProfileLink(this.model.getLoggedInUser());  // Update profile link in the view
     this.addEventListenersToButtons();  // Add event listeners to buttons
     }
 
@@ -23,6 +30,7 @@ class UserManagementController{
 
         // Get values from the add form
         const addForm = document.getElementById('add-user-form');
+
         const userName = addForm.querySelector('input[name="name"]').value;
         const email = addForm.querySelector('input[name="email"]').value;
         const password = addForm.querySelector('input[name="password"]').value;
