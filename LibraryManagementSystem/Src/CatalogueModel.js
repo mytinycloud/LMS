@@ -128,7 +128,7 @@ class CatalogueModel {
                     Math.min(...genreWords.map(genreWord => this.calculateLevenshteinDistance(word, genreWord))) <= fuzinessness;
             });
         });
-
+        
         return filteredBooks;
     }
 
