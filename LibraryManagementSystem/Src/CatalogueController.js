@@ -1,25 +1,23 @@
 class CatalogueController { 
     constructor(model, view) {
-    this.model = model;
-    this.view = view;
+        this.model = model;
+        this.view = view;
 
-    // DOM Elements
-    this.searchInput = document.getElementById('search');
+        // Bind event listeners to the correct form IDs
+        if (document.getElementById('book-search')){
+            this.searchInput = document.getElementById('book-search');
+            this.searchInput.addEventListener('input', this.handleSearch.bind(this));
+            this.view.updateBookTable(this.model.getBooks());  // Initial render
+            this.addEventListenersToButtons();  // Add event listeners to buttons
+        }
 
+        if (document.getElementById("add-book-form")) {
+            document.getElementById('add-book-form').addEventListener('submit', this.handleAddBook.bind(this));
+        }
 
-    // Bind event listeners to the correct form IDs
-    if (document.getElementById("add-book-form")) {
-        document.getElementById('add-book-form').addEventListener('submit', this.handleAddBook.bind(this));
-    }
-    if (document.getElementById("edit-book-form")) {
-        document.getElementById('edit-book-form').addEventListener('submit', this.handleEditBook.bind(this));
-    }
-    if (this.searchInput){
-        this.searchInput.addEventListener('input', this.handleSearch.bind(this));
-    }
-
-    this.view.updateBookTable(this.model.getBooks());  // Initial render
-    this.addEventListenersToButtons();  // Add event listeners to buttons
+        if (document.getElementById("edit-book-form")) {
+            document.getElementById('edit-book-form').addEventListener('submit', this.handleEditBook.bind(this));
+        };
     }
 
     handleAddBook(event) {

@@ -30,7 +30,7 @@ class UserManagement {
         const randomnumber = Math.random().toString(36).substring(2, 15);
         console.log(randomnumber)
         let existingIds = this.findUserById(randomnumber);
-        if (existingIds) {return randomId()}
+        if (existingIds) {return this.randomId()}
             return randomnumber;
     }
 
@@ -47,8 +47,13 @@ class UserManagement {
         this.saveUsers();
     }
           
-    editUser(userId, updates) {
-        Object.assign(userId, updates);
+    editUser(userID, updates) {
+        let user = this.findUserById(userID);
+        if (!user) {
+            console.log(`UserId ${userID} not found. Could not update user.`);
+            return;
+        }
+        Object.assign(user, updates);
         this.saveUsers();
     }
 
@@ -99,26 +104,26 @@ class UserManagement {
     }
 
     searchUsers(query) {
-        const fuzinessness = 5
-        const queryWords = String(query).toLowerCase().replace(/[^\w\s]/g, '').trim().split(/\s+/)
+        const fuzinessness = 3
+        const queryWords = query.toLowerCase().replace(/[^\w\s]/g, '').trim().split(/\s+/)
 
         let  fliteredUsers = this.allUsers
 
         queryWords.forEach((word, index) => {
             fliteredUsers = fliteredUsers.filter(user => {
 
-                if (!isNaN(query) && Number(query) === Number(user.userId)) {
+                if (!isNaN(query) && query === user.userId) {
                     return true;
                 }
 
                 const names = user.userName.toLowerCase().split(/\s+/);  
                 const emailparts = user.email.toLowerCase().split(/\s+/);
 
-                if (index === 0 && (names.toLowerCase().includes(query) || emailparts.toLowerCase().includes(query))) { 
+                if (index === 0 && (names.includes(query) || emailparts.includes(query))) { 
                     return true
                 }
                 return names.includes(word) || 
-                email.includes(word) || 
+                emailparts.includes(word) || 
                 Math.min(...names.map(name => this.calculateLevenshteinDistance(word, name))) <= fuzinessness || 
                 Math.min(...emailparts.map(emailpart => this.calculateLevenshteinDistance(word, emailpart))) <= fuzinessness
             });

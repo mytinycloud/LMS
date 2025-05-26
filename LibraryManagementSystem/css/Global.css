@@ -76,12 +76,16 @@ nav li {
 }
 
 nav a {
+    display: flex;
+    align-content: center;
+    flex-wrap: wrap;
     color: var(--light-text-color);
     text-decoration: none;
     font-weight: bold;
     transition: all 1s ease;
     padding: 8px 12px;
     border-radius: 4px;
+    
 }
 
 nav a:hover {

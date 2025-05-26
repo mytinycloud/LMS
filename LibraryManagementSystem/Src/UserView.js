@@ -49,6 +49,7 @@ class UserView {
     updateUserTable(users) {
         if (!this.userTableBody) {
             console.log("Element not found");
+            document.querySelector('tbody').innerHTML = "<tr><td colspan='5'>No users found</td></tr>";
             return;
         }
         this.userTableBody.innerHTML = "";

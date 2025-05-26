@@ -1,28 +1,25 @@
 class UserManagementController{
     constructor(model, view) {
-    this.model = model;
-    this.view = view;
+        this.model = model;
+        this.view = view;
 
-    // DOM Elements
-    this.searchInput = document.getElementById('search');
-    
-
-    // Bind event listeners to the correct form IDs
-    if (document.getElementById("add-user-button")) {
-        document.getElementById("add-user-button").addEventListener("click", () => {this.view.showForm("add-user-form")});
-    }
-    if (document.getElementById("add-user-form")) {
-        document.getElementById('add-user-form').addEventListener('submit', this.handleAddUser.bind(this));
-    }
-    if (document.getElementById('edit-user-form')) {
-        document.getElementById('edit-user-form').addEventListener('submit', this.handleEditUser.bind(this));
-    }
-    if (document.getElementById('input')) {
+        // Bind event listeners to the correct form IDs
+        if (document.getElementById('user-search')) {
+        this.searchInput = document.getElementById('user-search');
         this.searchInput.addEventListener('input', this.handleSearch.bind(this));
-    }
-    this.view.updateUserTable(this.model.getUsers());  // Initial render
-    this.view.updateProfileLink(this.model.getLoggedInUser());  // Update profile link in the view
-    this.addEventListenersToButtons();  // Add event listeners to buttons
+        this.view.updateUserTable(this.model.getUsers());  // Initial render
+        this.addEventListenersToButtons();  // Add event listeners to buttons
+        }
+        if (document.getElementById("add-user-button")) {
+            document.getElementById("add-user-button").addEventListener("click", () => {this.view.showForm("add-user-form")});
+        }
+        if (document.getElementById("add-user-form")) {
+            document.getElementById('add-user-form').addEventListener('submit', this.handleAddUser.bind(this));
+        }
+        if (document.getElementById('edit-user-form')) {
+            document.getElementById('edit-user-form').addEventListener('submit', this.handleEditUser.bind(this));
+        }
+        this.view.updateProfileLink(this.model.getLoggedInUser());  // Update profile link in the view
     }
 
     handleAddUser(event) {
@@ -80,11 +77,13 @@ class UserManagementController{
     }
 
     handleSearch() {
-        const query = this.searchInput.value.trim()
+        const query = this.searchInput.value.trim() // Get the search query from the input field
         if (query === '') {
-            this.view.updateUserTable(this.model.getUsers());
+            this.view.updateUserTable(this.model.getUsers()); // If the search query is empty show all users
         } else {
-            const filteredUsers = this.model.searchUsers(query);  
+            const filteredUsers = this.model.searchUsers(query);  // Search users based on the query
+
+            console.log('filtered users', filteredUsers)
             this.view.updateUserTable(filteredUsers);
         }
         this.addEventListenersToButtons();
@@ -136,7 +135,7 @@ class UserManagementController{
         console.log(loginButtons)
         loginButtons.forEach(button => {
             button.addEventListener('click', (event) => {
-                console.log('login clicked'); // Move this line here
+                console.log('login clicked'); 
                 this.handleLogin(event);
             });
         })

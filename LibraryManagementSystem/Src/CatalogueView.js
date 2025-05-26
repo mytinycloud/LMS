@@ -53,27 +53,33 @@ class CatalogueView {
     updateBookTable(books) {
         if (!this.bookTableBody) {
             console.log("Element not found");
+            
             return;
         }
         this.bookTableBody.innerHTML = "";
-        
-        books.forEach(book => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${book.title}</td>
-                <td>${book.author}</td>
-                <td>${book.genre}</td>
-                <td>${book.availability ? "Available" : "Unavailable"}</td>   
-                <td class="btn-group">
-                    <button class="view-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/View.png" ></button>
-                    <button class="edit-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Edit.png"></button>
-                    <button class="borrow-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Borrow.png"></button>
-                    <button class="delete-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Delete.png"></button>
-                </td>
+        if (books.length === 0) {
+            const empty = document.createElement("tr")
+            empty.innerHTML = "<td colspan='5'>No books found</td>";
+            this.bookTableBody.appendChild(empty)
+        }else{
+            books.forEach(book => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${book.title}</td>
+                    <td>${book.author}</td>
+                    <td>${book.genre}</td>
+                    <td>${book.availability ? "Available" : "Unavailable"}</td>   
+                    <td class="btn-group">
+                        <button class="view-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/View.png" ></button>
+                        <button class="edit-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Edit.png"></button>
+                        <button class="borrow-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Borrow.png"></button>
+                        <button class="delete-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Delete.png"></button>
+                    </td>
 
-            `;
-            this.bookTableBody.appendChild(row);
-        });
+                `;
+                this.bookTableBody.appendChild(row);
+            });
+        };
     }
     
     clearForm(formId) {
