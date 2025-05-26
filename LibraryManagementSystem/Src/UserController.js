@@ -143,7 +143,7 @@ class UserManagementController{
 }
         // Initialize the MVC components
 document.addEventListener('DOMContentLoaded', () => {
-    const model = new UserManagement();
+    window.userModel = new UserManagement();
     const view = new UserView();
-    new UserManagementController(model, view);
+    new UserManagementController(window.userModel, view);
 });

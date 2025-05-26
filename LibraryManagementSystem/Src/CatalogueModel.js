@@ -57,7 +57,8 @@ class CatalogueModel {
         } else {
             console.log(`Book with ID ${bookId} not found. Could not delete book.`);
         }
-    }
+    } 
+
     calculateLevenshteinDistance(searchTerm, bookIdentifier) {
 
         // Levenstein distance algorithm 
@@ -128,7 +129,7 @@ class CatalogueModel {
                     Math.min(...genreWords.map(genreWord => this.calculateLevenshteinDistance(word, genreWord))) <= fuzinessness;
             });
         });
-        
+
         return filteredBooks;
     }
 

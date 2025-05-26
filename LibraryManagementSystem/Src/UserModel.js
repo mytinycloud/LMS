@@ -11,7 +11,6 @@ class UserManagement {
     } 
  
     saveUsers() {
-        console.log("user saved as", this.allUsers)
         localStorage.setItem('users', JSON.stringify(this.allUsers));
     }
 
@@ -27,7 +26,7 @@ class UserManagement {
     }
 
     randomId() {
-        const randomnumber = Math.random().toString(36).substring(2, 15);
+        const randomnumber = crypto.randomUUID().substring(0, 8);
         console.log(randomnumber)
         let existingIds = this.findUserById(randomnumber);
         if (existingIds) {return this.randomId()}
@@ -64,6 +63,17 @@ class UserManagement {
         this.saveUsers();
         console.log(`"${removedUser}" was removed.`);
         
+    }
+
+    borrowBook(book) {
+        console.log("got book")
+        let loggedInUser = this.loadLoggedInUser();
+        let user = this.findUserById(loggedInUser.userId);
+        user.borrowedBooks.push(book);
+        this.saveUsers();
+        this.saveLoggedInUser(user);
+        console.log("borrowed books: ", user.borrowedBooks)
+    
     }
 
     // levenshtein distance algorithm 
@@ -155,6 +165,7 @@ class UserManagement {
     getUsers() {
         return this.allUsers;
     }
+
     getLoggedInUser() {
         return this.loadLoggedInUser();
     }
