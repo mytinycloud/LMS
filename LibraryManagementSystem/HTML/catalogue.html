@@ -20,7 +20,7 @@
                 <li><a href="users.html">User Management</a></li>
                 <li><a href="catalogue.html">Catalogue</a></li>
                 
-                <li><a href="Profile.html" id="profileLink" style='display: none;'></a></li>
+                <li><a href="Profile.html" id="profileLink"></a></li>
             </ul>
         </nav>
 
@@ -29,7 +29,7 @@
             <div class="modal-content">
                 <span class="close-button" onclick="catalogueView.hideForm('add-book-form')">&times;</span>
                 <h2>Add New Book</h2>
-                <form id="add-book-form">
+                <form>
                     <div class="form-group">
                         <label for="add-title">Title</label>
                         <input type="text" id="add-title" name="title" required>
@@ -63,7 +63,7 @@
             <div class="modal-content" >
                 <span class="close-button" onclick="catalogueView.hideForm('edit-book-form')">&times;</span>
                 <h2>Edit Book</h2>
-                <form id="edit-book-form">
+                <form>
                     <div class="form-group">
                         <label for="edit-title">Title</label>
                         <input type="text" id="edit-title" name="title">
@@ -104,7 +104,7 @@
             <div class="modal-content" >
                 <span class="close-button" onclick="catalogueView.hideForm('view-book-form')">&times;</span>
                 <h2>Book Details</h2>
-                <form id="view-book-form">
+                <form>
                     <div class="form-group">
                         <label for="view-BookId">BookId</label>
                         <input type="text" id="view-BookId" name="bookId" disabled>
@@ -178,10 +178,17 @@
             <p> 2025 BCDE102 James Hart</p>
         </footer>
     </div>
-    <script src="../Src/CatalogueModel.js"></script> 
-    <script src="../Src/CatalogueController.js"></script>
-    <script src="../Src/CatalogueView.js"></script>
     <script src="../Src/UserModel.js"></script>
     <script src="../Src/UserController.js"></script>
     <script src="../Src/UserView.js"></script>
+    
+    <script src="../Src/CatalogueModel.js"></script> 
+    <script src="../Src/CatalogueController.js"></script>
+    <script src="../Src/CatalogueView.js"></script>
+    
+    <script src="../Src/BorrowingRecordModel.js"></script>
+    <script src="../Src/BorrowingRecordController.js"></script>
+    <script src="../Src/BorrowingView.js"></script>
+
+    <script src="../Src/Main.js"></script>
 </html>

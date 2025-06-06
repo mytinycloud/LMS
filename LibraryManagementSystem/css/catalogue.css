@@ -101,7 +101,6 @@ tr:hover {
     padding: 6px 3px;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
 .btnimg {
@@ -117,8 +116,6 @@ tr:hover {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--accent-color);
-    color: var(--light-text-color);
     border-radius: 4px;
     padding: 0;
     margin: 0 2px;
@@ -136,14 +133,19 @@ tr:hover {
     background-color: var(--dangermouse-color);
 }
 
-.borrow-btn {
-    background-color: var(--primary-color);
+.borrow-btn.borrow-available {
+    background-color: var(--success-color);
 }
 
-.view-btn:hover,
-.edit-btn:hover,
-.delete-btn:hover,
-.borrow-btn:hover {
-    background-color: var(--hover-color);
-    transform: scale(1.1);
+.borrow-btn.borrow-unavailable {
+    background-color: var(--unavalible-color);
+}
+.borrow-btn.borrow-unavailable:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.view-btn:hover, .edit-btn:hover, .delete-btn:hover, .borrow-btn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--btn-shadow-color)
 }

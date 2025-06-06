@@ -68,6 +68,16 @@ th {
     text-align: center;
 }
 
+th:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+th:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
 tr {
     vertical-align: middle;
     box-shadow: 0 2px 4px var(--shadow-color);
@@ -134,5 +144,6 @@ tr:hover {
 .delete-btn:hover,
 .borrow-btn:hover {
     background-color: var(--hover-color);
-    transform: scale(1.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px var(--shadow-color)
 }
