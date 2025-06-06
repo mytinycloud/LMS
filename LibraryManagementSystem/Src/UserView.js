@@ -23,12 +23,18 @@ class UserView {
     updateProfileLink(user) {
         const loggedInUser = user;
         const profileLink = document.getElementById('profileLink');
-
+        
         if (user) {
             profileLink.style.display = "flex";
+            let imgSrc
 
             const overdueCount = window.RecordsModel.checkOverdue().length; // Get the count of overdue books
             const notifyBellSrc = overdueCount > 0 ? "../assets/notification-Red.png" : "../assets/notification-empty.png";
+            if (loggedInUser.userName === "Hadley Clark") { 
+                imgSrc = "../assets/easteregg.jpg"
+            }else{
+                imgSrc = "../assets/user.png"
+            }
         
 
             profileLink.innerHTML = `
@@ -38,7 +44,7 @@ class UserView {
                 </div>
                 
                 <span>${loggedInUser.userName}</span>
-                <img class="profileimg" src="../assets/Hadley.jpg" alt="Profile Picture">
+                <img class="profileimg" src=${imgSrc} alt="Profile Picture">
                 
             `;
         } else {

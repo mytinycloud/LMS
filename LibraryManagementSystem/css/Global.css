@@ -161,6 +161,8 @@ nav .profileimg {
     height: 50px;
     margin-left: 10px;
     border-radius: 50%;
+    border: 2px solid var(--btn-shadow-color);
+    padding: 2px;
     transition: all 0.8s ease-in-out;
     
 }

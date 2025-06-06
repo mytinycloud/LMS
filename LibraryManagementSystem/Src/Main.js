@@ -28,3 +28,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
+initLoadBooks;
+initLoadUsers;
