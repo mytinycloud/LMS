@@ -951,7 +951,10 @@ const books = [
   )
 ];
 
-function initLoadBooks() {
+
+let localbooks = localStorage.getItem('library_books')
+if (!localbooks) {
+  console.log("books not loaded")
   localStorage.setItem('library_books', JSON.stringify(books));
+  console.log("books loaded to local storage")
 }
-  

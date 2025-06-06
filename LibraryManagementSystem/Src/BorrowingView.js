@@ -83,6 +83,7 @@ class RecordsView {
             
             this.notifications.appendChild(row);
         });
+        
     }
 
 }

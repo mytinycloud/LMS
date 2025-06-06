@@ -152,9 +152,13 @@ nav .profilelink {
     font-weight: bold;
     transition: all 0.3s ease;
     padding: 15px 20px; 
-    border-radius: 0; 
-     
+    border-radius: 0;
+    transition: all 0.3 ease;     
 }
+
+ .profilelink:hover {
+    box-shadow: 0 4px 8px var(--btn-shadow-color)
+ }
 
 nav .profileimg {
     width: 50px; 
@@ -163,12 +167,12 @@ nav .profileimg {
     border-radius: 50%;
     border: 2px solid var(--btn-shadow-color);
     padding: 2px;
-    transition: all 0.8s ease-in-out;
+    transition: all 0.3s ease-in-out;
     
 }
 nav .profileimg:hover {
     transform: translateY(-4px);
-    border: 1px solid var(--primary-color); 
+    border: 2px solid var(--primary-color); 
     box-shadow: 0 4px 8px var(--btn-shadow-color)
 }
 

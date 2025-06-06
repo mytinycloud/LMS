@@ -169,6 +169,8 @@ const users = [
   ),
 ];
 
-function initLoadUsers() { 
+let localusers = localStorage.getItem('users')
+if (!localusers) {
   localStorage.setItem('users', JSON.stringify(users));
+  console.log("Users loaded to local storage")
 }

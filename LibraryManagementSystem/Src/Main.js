@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
     new CatalogueController(window.CatalogueModel, catalogueView);
     window.RecordsController = new RecordsController(window.RecordsModel, window.RecordsView);
 
-    
     const initialLoggedInUser = window.UserModel.getLoggedInUser();
     const min = 0.1; // 1 minute interval
     if (initialLoggedInUser) {
@@ -28,5 +27,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-initLoadBooks;
-initLoadUsers;
+
