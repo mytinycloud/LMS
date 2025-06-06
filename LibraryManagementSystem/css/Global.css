@@ -3,14 +3,16 @@
     --primary-color: #3498db86;
     --secondary-color: #2c3e50;
     --accent-color: #f39c12;
-    --dangermouse-color: #e74c3c;
+    --dangermouse-color: #f75948;
+    --unavalible-color: #83838379;
     --success-color: #2ecc71;
     --hover-color: #2980b9;
     
     --background-color: #f5f5f5;
     --soft-background: #fafafa;
     --border-color: #ddd;
-    --shadow-color: #0202020e;
+    --shadow-color: #00000028;
+    --btn-shadow-color: #000000c5;
     
     --text-color: #34495e;
     --light-text-color: #ecf0f1;
@@ -77,20 +79,18 @@ nav li {
 
 nav a {
     display: flex;
-    align-content: center;
-    flex-wrap: wrap;
+    align-items: center; 
     color: var(--light-text-color);
     text-decoration: none;
     font-weight: bold;
-    transition: all 1s ease;
-    padding: 8px 12px;
-    border-radius: 4px;
-    
+    transition: all 0.3s ease;
+    padding: 15px 20px; 
+    border-radius: 0; 
+    height: 50px;
 }
 
 nav a:hover {
-    color: var(--primary-color);
-    background-color: var(--shadow-color)
+    color: var(--accent-color);
 }
 
 nav a.active {
@@ -98,15 +98,76 @@ nav a.active {
     color: var(--soft-background);
 }
 nav :nth-last-child(1) {
-    margin-left: auto;
 
+    margin-left: auto;
+    align-self: auto;
 }
+
+@keyframes jiggle {
+0% { transform: rotate(0deg); }
+25% { transform: rotate(-10deg); }
+50% { transform: rotate(10deg); }
+75% { transform: rotate(-5deg); }
+100% { transform: rotate(0deg); }
+}
+
+nav .notify-bell {
+    width: 40px;
+    height: 40px;
+    background-size: cover;
+    margin-right: 15px;
+}
+nav .notify-belljiggle {
+    animation: jiggle 0.5s ease-in-out;
+    transform-origin: 50% 50%; 
+}
+
+.notify-icon-container {
+    position: relative; 
+    display: inline-block; 
+    margin-right: 10px; 
+}
+
+.notification-badge {
+    position: absolute; 
+    top: 20px; 
+    right: 8px; 
+    background-color: var(--dangermouse-color);
+    color: white; 
+    border-radius: 50%; 
+    padding: 2px 6px; 
+    font-size: 0.6em; 
+    font-weight: bold;
+    min-width: 18px;
+    min-height: 18px;
+    text-align: center;
+    box-shadow: 0 4px 8px var(--shadow-color);
+}
+
+nav .profilelink {
+    display: flex;
+    align-items: center; 
+    color: var(--light-text-color);
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    padding: 15px 20px; 
+    border-radius: 0; 
+     
+}
+
 nav .profileimg {
-    width: 25px;
-    height: 25px;
+    width: 50px; 
+    height: 50px;
     margin-left: 10px;
     border-radius: 50%;
-    background-color: var(--background-color);
+    transition: all 0.8s ease-in-out;
+    
+}
+nav .profileimg:hover {
+    transform: translateY(-4px);
+    border: 1px solid var(--primary-color); 
+    box-shadow: 0 4px 8px var(--btn-shadow-color)
 }
 
 /*  FORM ELEMENTS  */
@@ -187,9 +248,8 @@ button, input[type="submit"] {
 }
 
 button:hover, input[type="submit"]:hover {
-    background-color: var(--hover-color);
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px var(--shadow-color)
+    box-shadow: 0 4px 8px var(--btn-shadow-color)
 }
 
 /* MODALS */

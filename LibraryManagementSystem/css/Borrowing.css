@@ -1,0 +1,38 @@
+.notification-normal {
+    background-color: var(--soft-background);
+    padding: 10px; 
+    margin-bottom: 10px; 
+    border-left: 4px solid #3498db;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px var(--btn-shadow-color)
+}
+.notification-normal button {
+    display: flex;
+}
+
+.notification-returned {
+    background-color: #e4fce8b0;
+    padding: 10px; 
+    margin-bottom: 10px; 
+    border-left: 4px solid var(--success-color);
+    border-radius: 5px;
+    box-shadow: 0 4px 8px var(--btn-shadow-color)
+}
+.notification-returned button {
+    display: none;
+}
+.notification-overdue {
+    background-color: #f7b2b2;
+    padding: 10px; 
+    margin-bottom: 10px; 
+    border-left: 4px solid var(--dangermouse-color);
+    border-radius: 5px;
+    box-shadow: 0 4px 8px var(--btn-shadow-color)
+}
+p {
+    color: #5f6969; 
+    font-size: 14px; 
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 0 10px;
+}
