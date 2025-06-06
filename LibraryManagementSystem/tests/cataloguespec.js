@@ -1,4 +1,4 @@
-describe("CatalogueModel.js", () => {
+describe("Books", () => {
     
     describe("Book Class", () => {
         let book;

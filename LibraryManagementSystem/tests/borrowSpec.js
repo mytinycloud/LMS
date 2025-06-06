@@ -1,4 +1,4 @@
-describe("borrowingRecordModel.js", () => {
+describe("Borrowing", () => {
 
     describe("Borrow Book Functionality", () => {
         let bookModel, userModel, borrowModel, catalogueController, catalogueView, user1, book1, mockEvent;

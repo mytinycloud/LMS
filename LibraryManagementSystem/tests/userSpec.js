@@ -1,4 +1,4 @@
-describe("UserModel.js", () => {
+describe("Users", () => {
     
     describe("User Class", () => {
         let user1;
