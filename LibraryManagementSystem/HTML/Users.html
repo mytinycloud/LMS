@@ -20,7 +20,7 @@
                 <li><a href="users.html">User Management</a></li>
                 <li><a href="catalogue.html">Catalogue</a></li>
                 
-                <li><a href="Profile.html" id="profileLink" style='display: none;'></a></li>
+                <li><a href="Profile.html" id="profileLink"></a></li>
 
             </ul>
         </nav>
@@ -29,9 +29,9 @@
 
         <div id="add-user-form" class="modal">
             <div class="modal-content">
-                <span class="close-button" onclick="userView.hideForm('add-user-form')">&times;</span>
+                <span class="close-button" onclick="window.UserView.hideForm('add-user-form')">&times;</span>
                 <h2>Add New User</h2>
-                <form id="add-user-form">
+                <form>
                     <div class="form-group">
                         <label for="add-name">name</label>
                         <input type="text" id="add-name" name="name" required>
@@ -58,9 +58,9 @@
 
         <div id="edit-user-form" class="modal">
             <div class="modal-content">
-                <span class="close-button" onclick="userView.hideForm('edit-user-form')">&times;</span>
+                <span class="close-button" onclick="window.UserView.hideForm('edit-user-form')">&times;</span>
                 <h2>Edit User</h2>
-                <form id="edit-user-form">
+                <form>
                     <div class="form-group">
                         <label for="edit-name">name</label>
                         <input type="text" id="edit-name" name="name" required>
@@ -120,8 +120,18 @@
             <p> 2025 BCDE102 James Hart</p>
         </footer>
     </div>
-    <script src="../Src/UserModel.js"></script> 
+    <script src="../Src/UserModel.js"></script>
     <script src="../Src/UserController.js"></script>
     <script src="../Src/UserView.js"></script>
+    
+    <script src="../Src/CatalogueModel.js"></script> 
+    <script src="../Src/CatalogueController.js"></script>
+    <script src="../Src/CatalogueView.js"></script>
+    
+    <script src="../Src/BorrowingRecordModel.js"></script>
+    <script src="../Src/BorrowingRecordController.js"></script>
+    <script src="../Src/BorrowingView.js"></script>
+
+    <script src="../Src/Main.js"></script>
 </body>
 </html>

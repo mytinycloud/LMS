@@ -19,7 +19,10 @@ class UserManagementController{
         if (document.getElementById('edit-user-form')) {
             document.getElementById('edit-user-form').addEventListener('submit', this.handleEditUser.bind(this));
         }
-        this.view.updateProfileLink(this.model.getLoggedInUser());  // Update profile link in the view
+        if (this.model.getLoggedInUser()) {
+            this.view.updateProfileLink(this.model.getLoggedInUser());  // Update profile link in the view
+        }
+        
     }
 
     handleAddUser(event) {
@@ -130,9 +133,7 @@ class UserManagementController{
                 this.view.setplaceholder(user, 'edit-user-form');
             });
         })
-        console.log('login buttons')
         const loginButtons = document.querySelectorAll('.login-btn');
-        console.log(loginButtons)
         loginButtons.forEach(button => {
             button.addEventListener('click', (event) => {
                 console.log('login clicked'); 
@@ -141,9 +142,4 @@ class UserManagementController{
         })
     }
 }
-        // Initialize the MVC components
-document.addEventListener('DOMContentLoaded', () => {
-    window.userModel = new UserManagement();
-    const view = new UserView();
-    new UserManagementController(window.userModel, view);
-});
+

@@ -13,6 +13,14 @@ class CatalogueModel {
         localStorage.setItem('library_books', JSON.stringify(this.books));
     }
 
+    randomId() {
+        const randomnumber = crypto.randomUUID().substring(0, 12);
+        console.log(randomnumber)
+        let existingBook = this.findBookById(randomnumber);
+        if (existingBook) {return this.randomId()}
+            return randomnumber;
+    }
+
     // addBook takes a book object from the controller and adds it to the books array, then saves the books to local storage.
     addBook(book) {
         if (!book || !book.ISBN || !book.bookId) {
@@ -51,7 +59,7 @@ class CatalogueModel {
         if (book) {   
             console.log(book)       
             const removedBook = book.title;
-            this.books = this.books.filter(book => Number(book.bookId) !== Number(bookId));
+            this.books = this.books.filter(book => book.bookId !== bookId);
             this.saveBooks();
             console.log(`"${removedBook}" was removed.`);
         } else {
@@ -101,43 +109,60 @@ class CatalogueModel {
         const fuzinessness = 2;
         const queryWords = String(query).toLowerCase().replace(/[^\w\s]/g, '').trim().split(/\s+/);
 
-        let filteredBooks = this.books;
+        const scoredBooks = [];
+        this.books.forEach(book => {
+            let score = 0;
+            const lowerTitle = book.title.toLowerCase();
+            const lowerAuthor = book.author.toLowerCase();
+            const lowerGenre = book.genre.toLowerCase();
 
-        queryWords.forEach((word, index) => {
-            filteredBooks = filteredBooks.filter(book => {
+            if (String(query) === String(book.bookId) || String(query) === String(book.ISBN)) {
+                score += 100; // Exact match for bookId or ISBN
+            }
+            if (lowerTitle.includes(query) || lowerAuthor.includes(query) || lowerGenre.includes(query)) {
+                score += 1000; // Exact match
+            }
 
-            if (!isNaN(query) && Number(query) === Number(book.bookId) || Number(query) === Number(book.ISBN) ) {
-                    return true;
-                }
+            queryWords.forEach((word) => {
                 const titleWords = book.title.toLowerCase().split(/\s+/);
                 const authorWords = book.author.toLowerCase().split(/\s+/);
                 const genreWords = book.genre.toLowerCase().split(/\s+/);
 
-                // Exact match for full query (strongest match)
-                if (index === 0 && (book.title.toLowerCase().includes(query) ||
-                                    book.author.toLowerCase().includes(query) ||
-                                    book.genre.toLowerCase().includes(query))) {
-                    return true;
+                if (titleWords.includes(word)) {
+                    score += 5; 
+                } else if (Math.min(...titleWords.map(titleWord => this.calculateLevenshteinDistance(word, titleWord))) <= fuzinessness) {
+                    score += 3; 
                 }
-
-                // Match individual words progressively narrowing results
-                return titleWords.includes(word) || 
-                    authorWords.includes(word) || 
-                    genreWords.includes(word) || 
-                    Math.min(...titleWords.map(titleWord => this.calculateLevenshteinDistance(word, titleWord))) <= fuzinessness ||
-                    Math.min(...authorWords.map(authorWord => this.calculateLevenshteinDistance(word, authorWord))) <= fuzinessness ||
-                    Math.min(...genreWords.map(genreWord => this.calculateLevenshteinDistance(word, genreWord))) <= fuzinessness;
+                if (authorWords.includes(word) ) {
+                    score += 5; 
+                } else if (Math.min(...authorWords.map(authorWord => this.calculateLevenshteinDistance(word, authorWord))) <= fuzinessness) {
+                    score += 3; 
+                }
+                if (genreWords.includes(word) ) {
+                    score += 5; 
+                } else if (Math.min(...genreWords.map(genreWord => this.calculateLevenshteinDistance(word, genreWord))) <= fuzinessness) {
+                    score += 3; 
+                }
             });
+            if (score > 0) {
+                scoredBooks.push({ book: book, score: score });
+            }
+        });
+        scoredBooks.sort((a, b) => {
+            if (b.score !== a.score) {
+                return b.score - a.score; // Sort by score in descending order
+            }
+            return a.book.title.localeCompare(b.book.title); // Sort by title if scores are equal
         });
 
-        return filteredBooks;
+        return scoredBooks.map(item => item.book);
     }
 
     findBookById(query) {
-        return this.books.find(book => Number(book.bookId) === Number(query));
+        return this.books.find(book => String(book.bookId) === String(query));
     }
     findBookByISBN(query) {
-        return this.books.find(book => Number(book.ISBN) === Number(query));
+        return this.books.find(book =>String(book.ISBN) === String(query));
     }
 
     getBooks() {

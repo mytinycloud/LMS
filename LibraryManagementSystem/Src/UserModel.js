@@ -7,7 +7,7 @@ class UserManagement {
     loadUsers() {
         const userJSON = localStorage.getItem('users');
         const user = userJSON ? JSON.parse(userJSON) : [];
-            return user.map(user => new User(user.userId, user.userName, user.email, user.password, user.role, user.borrowedBooks));
+        return user.map(user => new User(user.userId, user.userName, user.email, user.password, user.role, user.borrowedBooks));
     } 
  
     saveUsers() {
@@ -15,14 +15,29 @@ class UserManagement {
     }
 
     saveLoggedInUser(user) {
-        console.log('saved user') 
-        localStorage.setItem('currentUser', JSON.stringify(user));
+        localStorage.setItem('currentUser', JSON.stringify(user || null));
     }
 
     loadLoggedInUser() {
         const userJSON = localStorage.getItem('currentUser');
-        let user = userJSON ? JSON.parse(userJSON): '';
-            return user = new User(user.userId, user.userName, user.email, user.password, user.role, user.borrowedBooks);
+        let user = null;
+        try {
+            if (userJSON) {
+                const parsed = JSON.parse(userJSON);
+                if (parsed !== null) {
+                    user = parsed;
+                    
+                }
+            }
+        } catch (error) {
+            console.error("Error parsing currentUser from localStorage:", error);
+        }
+        if (!user) {
+            console.log("No user is currently logged in.");
+            return null;
+        }
+        return user = new User(user.userId, user.userName, user.email, user.password, user.role, user.borrowedBooks);
+        
     }
 
     randomId() {
@@ -36,7 +51,7 @@ class UserManagement {
     addUser(user) {
         const existingEmail = this.findUserByEmail(user.email);
         if (existingEmail) {
-            console.log("User already exists");
+            console.warn("User already exists");
             return;
         }
         let userId = this.randomId() 
@@ -65,15 +80,19 @@ class UserManagement {
         
     }
 
-    borrowBook(book) {
-        console.log("got book")
-        let loggedInUser = this.loadLoggedInUser();
-        let user = this.findUserById(loggedInUser.userId);
+    borrowBook(book , user) {
         user.borrowedBooks.push(book);
         this.saveUsers();
         this.saveLoggedInUser(user);
         console.log("borrowed books: ", user.borrowedBooks)
     
+    }
+    returnBook(bookId) {
+        let user = this.loadLoggedInUser();
+        user.borrowedBooks = user.borrowedBooks.filter(book => book.bookId !== bookId);
+        this.saveUsers();
+        this.saveLoggedInUser(user);
+        window.UserView.updateProfileLink(user);
     }
 
     // levenshtein distance algorithm 
@@ -115,31 +134,46 @@ class UserManagement {
 
     searchUsers(query) {
         const fuzinessness = 3
-        const queryWords = query.toLowerCase().replace(/[^\w\s]/g, '').trim().split(/\s+/)
+        const queryWords = String(query).toLowerCase().replace(/[^\w\s]/g, '').trim().split(/\s+/)
+        const scoredUsers = [];
+        this.allUsers.forEach(user => {
+            let score = 0;
+            const lowername = user.userName.toLowerCase();
+            const loweremail = user.email.toLowerCase();
 
-        let  fliteredUsers = this.allUsers
+            if (String(query) === user.userId) {
+                score += 1000; // Exact match on userId
+            }
+            if (lowername.includes(query) || loweremail.includes(query)) {
+                score += 1000; // Exact match on name or email
+            }
 
-        queryWords.forEach((word, index) => {
-            fliteredUsers = fliteredUsers.filter(user => {
-
-                if (!isNaN(query) && query === user.userId) {
-                    return true;
-                }
-
+            queryWords.forEach((word) => {
                 const names = user.userName.toLowerCase().split(/\s+/);  
-                const emailparts = user.email.toLowerCase().split(/\s+/);
+                const emailparts = user.email.toLowerCase().split(/[@.]+/);
 
-                if (index === 0 && (names.includes(query) || emailparts.includes(query))) { 
-                    return true
+                if (names.includes(word)){
+                    score += 5; 
+                } else if (Math.min(...names.map(name => this.calculateLevenshteinDistance(word, name))) <= fuzinessness) {
+                    score += 3; // Fuzzy match on name
                 }
-                return names.includes(word) || 
-                emailparts.includes(word) || 
-                Math.min(...names.map(name => this.calculateLevenshteinDistance(word, name))) <= fuzinessness || 
-                Math.min(...emailparts.map(emailpart => this.calculateLevenshteinDistance(word, emailpart))) <= fuzinessness
+                if (emailparts.includes(word)) {
+                    score += 5; 
+                } else if (Math.min(...emailparts.map(emailpart => this.calculateLevenshteinDistance(word, emailpart))) <= fuzinessness) {
+                    score += 3; // Fuzzy match on email
+                }
             });
- 
+            if (score > 0) {
+                scoredUsers.push({ user: user, score: score });
+            }
         });
-        return fliteredUsers;
+        scoredUsers.sort((a, b) => {
+            if (b.score !== a.score) {
+                return b.score - a.score; // Sort by score in descending order
+            }
+            return a.user.userName.localeCompare(b.user.userName); // Sort by name if scores are equal
+        });
+        return scoredUsers.map(item => item.user);
     }
 
     findUserById(query) {

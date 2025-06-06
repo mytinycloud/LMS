@@ -18,11 +18,13 @@ class CatalogueController {
         if (document.getElementById("edit-book-form")) {
             document.getElementById('edit-book-form').addEventListener('submit', this.handleEditBook.bind(this));
         };
+        
+        
     }
 
     handleAddBook(event) {
         event.preventDefault();
-        let bookId = this.model.getBooks().length + 1;
+        let bookId = this.model.randomId();  // Generate a random book ID
         
         // Get values from the add form
         const addForm = document.getElementById('add-book-form');
@@ -30,7 +32,7 @@ class CatalogueController {
         const author = addForm.querySelector('input[name="author"]').value;
         const genre = addForm.querySelector('input[name="genre"]').value;
         const ISBN = addForm.querySelector('input[name="ISBN"]').value;
-        const availability = true
+        const availability = true;
         const location = addForm.querySelector('input[name="location"]').value;
         const description = addForm.querySelector('textarea[name="description"]').value || '';
 
@@ -56,7 +58,7 @@ class CatalogueController {
         const author = editForm.querySelector('input[name="author"]').value;
         const genre = editForm.querySelector('input[name="genre"]').value;
         const ISBN = editForm.querySelector('input[name="ISBN"]').value;
-        const availability = editForm.querySelector('select[name="availability"]').value; 
+        const availability = editForm.querySelector('select[name="availability"]').value === "Available";
         const location = editForm.querySelector('input[name="location"]').value;
         const description = editForm.querySelector('textarea[name="description"]').value || '';
 
@@ -85,15 +87,28 @@ class CatalogueController {
     handleBorrowBook(event){
         const bookId = event.currentTarget.getAttribute('data-book-id'); 
         const book = this.model.findBookById(bookId);
+        const loggedInUser = window.UserModel.getLoggedInUser();
         if (book.availability === false) {
             alert("This book is currently unavailable for borrowing.");
             return;
         }
-        window.userModel.borrowBook(book);
-        book.availability = false 
-        this.model.editBook(bookId, book)
-        this.view.updateBookTable(this.model.getBooks())
-        this.addEventListenersToButtons();
+        if (loggedInUser.borrowedBooks.some(book => book.bookId === bookId)) {
+            alert("You cant borrow the same book twice.");
+            return;
+        }
+
+        if (!loggedInUser || !loggedInUser.userId) {
+            return;
+        }
+
+        // Mark book as unavailable in the catalogue
+        book.availability = false;
+        this.model.editBook(bookId, book);
+        
+        window.UserModel.borrowBook(book, loggedInUser); // Update the user's borrowed books
+        window.RecordsModel.createRecord(book, loggedInUser); // Create a borrowing record
+        this.view.updateBookTable(this.model.getBooks()); // Refresh the catalogue table
+        this.addEventListenersToButtons(); // Re-add event listeners
     }
 
     handleSearch() {
@@ -128,7 +143,6 @@ class CatalogueController {
 
                 const form = document.getElementById('edit-book-form');
                 form.setAttribute('data-editing-id', bookId);
-                console.log(book)
                 this.view.setplaceholder(book, 'edit-book-form');
             });
         });
@@ -146,18 +160,13 @@ class CatalogueController {
             });
         });
 
-        const borrowButtons = document.querySelectorAll('.borrow-btn'); 
+        const borrowButtons = document.querySelectorAll('.borrow-btn');
         borrowButtons.forEach(button => {
-            button.addEventListener('click', (event) => { this.handleBorrowBook(event);
+            button.addEventListener('click', (event) => {this.handleBorrowBook(event);
             });
         });
-
     }
 }
 
-// Initialize the MVC components
-document.addEventListener('DOMContentLoaded', () => {
-    const model = new CatalogueModel();
-    const view = new CatalogueView();
-    new CatalogueController(model, view,);
-});
+
+

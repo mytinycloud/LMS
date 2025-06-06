@@ -32,19 +32,19 @@ class CatalogueView {
         const authorField = form.querySelector('input[name="author"]');
         const genreField = form.querySelector('input[name="genre"]');
         const isbnField = form.querySelector('input[name="ISBN"]');
-        const availabilityField = form.querySelector('select[name="availability"]');
-        const availabilityTextField = form.querySelector('#view-availability');
+        const availabilityField = form.querySelector('select[name="availability"]');  // dropdown to set availability in edit form
+        const availabilityTextField = form.querySelector('#view-availability'); // static text field to set availability in view form
         const locationField = form.querySelector('input[name="location"]');
         const descriptionField = form.querySelector('textarea[name="description"]');
         
         // Set values if fields exist
-        if (bookIdField) bookIdField.value = book.bookId
+        if (bookIdField) bookIdField.value = book.bookId;
         if (titleField) titleField.value = book.title || "";
         if (authorField) authorField.value = book.author;
         if (genreField) genreField.value = book.genre;
         if (isbnField) isbnField.value = book.ISBN;
-        if (availabilityField) availabilityField.value ? "Available" : "Not Available";
-        if (availabilityTextField) availabilityTextField.value = book.availability ? "Available" : "Not Available";
+        if (availabilityField) availabilityField.value = book.availability ? "Available" : "Unavailable"; // Set dropdown value for edit form
+        if (availabilityTextField) availabilityTextField.value = book.availability ? "Available" : "Unavailable"; // Set static text for view form
         if (locationField) locationField.value = book.location || "";
         if (descriptionField) descriptionField.value = book.description || "";
     }
@@ -53,7 +53,6 @@ class CatalogueView {
     updateBookTable(books) {
         if (!this.bookTableBody) {
             console.log("Element not found");
-            
             return;
         }
         this.bookTableBody.innerHTML = "";
@@ -72,7 +71,7 @@ class CatalogueView {
                     <td class="btn-group">
                         <button class="view-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/View.png" ></button>
                         <button class="edit-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Edit.png"></button>
-                        <button class="borrow-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Borrow.png"></button>
+                        <button class="borrow-btn ${book.availability ? 'borrow-available' : 'borrow-unavailable'}" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Borrow.png"></button>
                         <button class="delete-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Delete.png"></button>
                     </td>
 

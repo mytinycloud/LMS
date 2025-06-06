@@ -1,7 +1,7 @@
 class UserView {
     constructor() {
         this.userTableBody = document.querySelector('tbody');
-        window.userView = this;
+        window.UserView = this;
     }
 
     showForm(modalId) {
@@ -21,15 +21,30 @@ class UserView {
         }
     }
     updateProfileLink(user) {
-        const loggedInUser = user
-        console.log("Updating profile link for user:", loggedInUser);
+        const loggedInUser = user;
         const profileLink = document.getElementById('profileLink');
+
         if (user) {
-            profileLink.style.display = "inline"; // Show the profile link
-            profileLink.innerHTML = `${loggedInUser.userName} <img class="profileimg" src="../assets/user.png">`
-            console.log("Profile link updated:", profileLink.textContent);
+            profileLink.style.display = "flex";
+
+            const overdueCount = window.RecordsModel.checkOverdue().length; // Get the count of overdue books
+            const notifyBellSrc = overdueCount > 0 ? "../assets/notification-Red.png" : "../assets/notification-empty.png";
+        
+
+            profileLink.innerHTML = `
+                <div class="notify-icon-container">
+                    <img class="notify-bell ${overdueCount > 0 ? "notify-belljiggle" : ""}" src="${notifyBellSrc}" alt="Notifications">
+                    ${overdueCount > 0 ? `<span class="notification-badge">${overdueCount}</span>` : ''}
+                </div>
+                
+                <span>${loggedInUser.userName}</span>
+                <img class="profileimg" src="../assets/Hadley.jpg" alt="Profile Picture">
+                
+            `;
         } else {
-            console.error("Profile link element not found");
+            if (profileLink) {
+                profileLink.style.display = "none";
+            }
         }
     }
     setplaceholder(user, modalId) {
@@ -43,18 +58,20 @@ class UserView {
         if (nameField) nameField.value = user.userName;
         if (emailField) emailField.value = user.email;
         if (passwordField) passwordField.value = user.password;
-        if (roleField) roleField.value ? "Member" : "Librarian";
+        if (roleField) roleField.value = user.role;
     }
 
     updateUserTable(users) {
         if (!this.userTableBody) {
             console.log("Element not found");
-            document.querySelector('tbody').innerHTML = "<tr><td colspan='5'>No users found</td></tr>";
             return;
         }
         this.userTableBody.innerHTML = "";
-        
-        users.forEach(user => {
+        if (users.length === 0) {
+            const empty = document.createElement("tr")
+            empty.innerHTML = "<td colspan='5'>No Users found</td>";
+            this.userTableBody.appendChild(empty)
+        }else{users.forEach(user => {
             const row = document.createElement("tr");
             row.innerHTML = `
                 <td>${user.userId}</td> 
@@ -66,10 +83,10 @@ class UserView {
                     <button class="delete-btn" data-user-id="${user.userId}"><img class="btnimg" src="../assets/Delete.png"></button>
                     <button class="login-btn" data-user-id="${user.userId}">Login</button>
                 </td>
-
             `;
             this.userTableBody.appendChild(row);
-        });
+            });
+        }
     }
     
     clearForm(formId) {
