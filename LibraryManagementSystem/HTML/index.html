@@ -20,50 +20,37 @@
                 <li><a href="users.html">User Management</a></li>
                 <li><a href="catalogue.html">Catalogue</a></li>
                 
-                <li><a href="Profile.html" id="profileLink" style='display: none;'></a></li>
+                <li><a href="Profile.html" id="profileLink"></a></li>
             </ul>
         </nav>
 
-        <div class="welcome-section">
-            <h2>Welcome to the Library Management System</h2>
-            <p>Use the navigation above to access different sections of the system.</p>
-            
-            <div class="overview">
-                <div class="stat-box">
-                    <h3>Total Books</h3>
-                    <p>3,542</p>
-                </div>
-                <div class="stat-box">
-                    <h3>Active Members</h3>
-                    <p>752</p>
-                </div>
-                <div class="stat-box">
-                    <h3>Books Borrowed</h3>
-                    <p>284</p>
-                </div>
-                <div class="stat-box">
-                    <h3>Overdue Books</h3>
-                    <p>27</p>
-                </div>
+        <!-- Hero Welcome Section -->
+        <section class="hero-welcome-section">
+            <div class="hero-content">
+                <h2>Welcome to the Library!</h2>
+                <a href="Users.html" class="usr-button">Login</a>
+                <p>and</p>
+                <a href="catalogue.html" class="cta-button">Explore Our Catalogue!</a>
             </div>
-        </div>
-
-        <h2 style="margin-bottom: 20px; color: #2c3e50;">Quick Actions</h2>
-        <div class="quick-links">
-            <a href="books.html" class="quick-link">Add New Book</a>
-            <a href="users.html" class="quick-link">Register User</a>
-            <a href="catalogue.html" class="quick-link">Search Catalogue</a>
-        </div>
+        </section>
+            
 
         <footer>
             <p> 2025 BCDE102 James Hart</p>
         </footer>
     </div>
-    <script src="../Src/CatalogueModel.js"></script> 
-    <script src="../Src/CatalogueController.js"></script>
-    <script src="../Src/CatalogueView.js"></script>
     <script src="../Src/UserModel.js"></script>
     <script src="../Src/UserController.js"></script>
     <script src="../Src/UserView.js"></script>
+    
+    <script src="../Src/CatalogueModel.js"></script> 
+    <script src="../Src/CatalogueController.js"></script>
+    <script src="../Src/CatalogueView.js"></script>
+    
+    <script src="../Src/BorrowingRecordModel.js"></script>
+    <script src="../Src/BorrowingRecordController.js"></script>
+    <script src="../Src/BorrowingView.js"></script>
+
+    <script src="../Src/Main.js"></script>
 </body>
 </html>
