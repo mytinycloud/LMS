@@ -8,6 +8,7 @@ class RecordsController {
         };
     }    
     
+    // Handles return button clicks triggering edit of borrowed status in user.borrwedbooks and book.availibiliy 
     handleReturnBook(event) {
         const recordId = event.target.getAttribute('data-record-id');
         const record = this.model.findRecordById(recordId);
@@ -18,9 +19,9 @@ class RecordsController {
             record.status = 'returned';
             this.model.saveRecords();
             book.availability = true;
-            window.CatalogueModel.editBook(book.bookId, book);
-            window.UserModel.returnBook(book.bookId); // Update the user's borrowed books
-            this.view.updateNotifications(this.model.getCurrentUserRecords());
+            window.CatalogueModel.editBook(book.bookId, book);  // Update book Availability
+            window.UserModel.returnBook(book.bookId);  // Update the user's borrowed books
+            this.view.updateNotifications(this.model.getCurrentUserRecords());  // Changes notification to returned
             this.addEventListenersToButtons();  // Re-add event listeners as the table has been refreshed
         } else {
             throw new Error(`Record with ID ${recordId} not found.`);

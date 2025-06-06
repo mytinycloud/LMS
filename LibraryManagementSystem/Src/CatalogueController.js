@@ -22,12 +22,15 @@ class CatalogueController {
         
     }
 
+    // handle add-book-form input and creates a new book to send to model.addBook()
     handleAddBook(event) {
         event.preventDefault();
-        let bookId = this.model.randomId();  // Generate a random book ID
+        let bookId = this.model.randomId(); 
         
-        // Get values from the add form
+        // Get values from the add-book-form
         const addForm = document.getElementById('add-book-form');
+
+        // 
         const title = addForm.querySelector('input[name="title"]').value;
         const author = addForm.querySelector('input[name="author"]').value;
         const genre = addForm.querySelector('input[name="genre"]').value;
@@ -36,7 +39,7 @@ class CatalogueController {
         const location = addForm.querySelector('input[name="location"]').value;
         const description = addForm.querySelector('textarea[name="description"]').value || '';
 
-        const newBook = new Book(bookId, title, author, genre, ISBN, availability, location, description);
+        const newBook = new Book(bookId, title, author, genre, ISBN, availability, location, description);  // New book from user input. 
         
         this.model.addBook(newBook);  // Add to model
         
@@ -47,13 +50,11 @@ class CatalogueController {
         this.addEventListenersToButtons();  // Re-add event listeners as the table has been refreshed
     }
 
+    // 
     handleEditBook(event) {
         event.preventDefault();
-        console.log('handleeditbook callled ')
         const editForm = document.getElementById('edit-book-form');
         const bookId = editForm.getAttribute('data-editing-id');
-        console.log("bookid: ", bookId)
-        
         const title = editForm.querySelector('input[name="title"]').value;
         const author = editForm.querySelector('input[name="author"]').value;
         const genre = editForm.querySelector('input[name="genre"]').value;
@@ -111,8 +112,9 @@ class CatalogueController {
         this.addEventListenersToButtons(); // Re-add event listeners
     }
 
+    // Sends books array to update book table
     handleSearch() {
-        const query = this.searchInput.value.trim()
+        const query = this.searchInput.value
         if (query === '') {
             this.view.updateBookTable(this.model.getBooks());
         } else {
@@ -130,7 +132,8 @@ class CatalogueController {
             button.addEventListener('click', (event) => {this.handleDeleteBook(event);
             });
         });
-        
+
+        // Adds listners to edit buttons gets book details and sends them to view.setplaceholder to display current changable details.
         const editButtons = document.querySelectorAll('.edit-btn'); // Link edit button 
         editButtons.forEach(button => {
             button.addEventListener('click', (event) => {
@@ -147,6 +150,7 @@ class CatalogueController {
             });
         });
 
+        // adds listners forr view buttions getting all book details and displaying them via view.setplaceholders
         const viewButtons = document.querySelectorAll('.view-btn');
         viewButtons.forEach(button => {
             button.addEventListener('click', (event) => {
@@ -160,6 +164,7 @@ class CatalogueController {
             });
         });
 
+        // Adds listners for borrow buttons 
         const borrowButtons = document.querySelectorAll('.borrow-btn');
         borrowButtons.forEach(button => {
             button.addEventListener('click', (event) => {this.handleBorrowBook(event);

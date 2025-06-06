@@ -6,7 +6,8 @@ class RecordsView {
         }
         window.RecordsView = this;
     }
-
+    // updates Div sections on the profile page where it sorts over due to the top and returned records to the bottom, 
+    // it then displays a different div for each respective record type.
     updateNotifications(borrowingRecords) {
         if (!this.notifications) {
             console.log("Element not found");
@@ -20,31 +21,36 @@ class RecordsView {
             return;
         }
 
+        // gets the current date and sets time to midnight to reflect a day, so overdue book are only overdue the day after their due date
         const today = new Date();
-        //today.setHours(0, 0, 0, 0);
+        //today.setHours(0, 0, 0, 0);  // comment this out when testing 
 
+        // Sorts records based on status
         const sortedRecords = [...borrowingRecords].sort((a, b) => {
             const aOverdue = a.dueDate < today && a.status === 'borrowed';
             const bOverdue = b.dueDate < today && b.status === 'borrowed';
             const areturned = a.status === 'returned';
             const breturned = b.status === 'returned';
-
+            
+            // overdue records come first 
             if (aOverdue && !bOverdue){
                 return -1;
             } else if (!aOverdue && bOverdue) {
                 return 1;
             } else {
+                    // returned recorrds come last
                     if (areturned && !breturned) {
-                        return 1; // Returned records come last
+                        return 1; 
                     }else if (!areturned && breturned) {
-                        return -1; // Returned records come last
+                        return -1; 
                     }
             return a.dueDate - b.dueDate; // Sort by due date if both are overdue or returned
             }
             
 
         });
-
+        
+        // Display records by there status
         sortedRecords.forEach(record => {
             const row = document.createElement("div");
             row.className = "notification";

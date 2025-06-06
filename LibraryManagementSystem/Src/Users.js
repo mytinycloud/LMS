@@ -159,14 +159,6 @@ const users = [
     "Member",
     []
   ),
-  new User(
-    "5184477c",
-    "af",
-    "af@failjl.co",
-    "af",
-    "Member",
-    []
-  ),
 ];
 
 let localusers = localStorage.getItem('users')
