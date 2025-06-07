@@ -4,24 +4,24 @@ class CatalogueModel {
     }
     
     loadBooks() {
-        const booksJSON = localStorage.getItem('library_books');
-        const books = booksJSON ? JSON.parse(booksJSON) : [];
-            return books.map(book => new Book(book.bookId, book.title, book.author, book.genre, book.ISBN, book.availability, book.location, book.description));
+        const booksJSON = localStorage.getItem('library_books');  // Gets books object from localstorage
+        const books = booksJSON ? JSON.parse(booksJSON) : [];  // Prases book into a book array
+            return books.map(book => new Book(book.bookId, book.title, book.author, book.genre, book.ISBN, book.availability, book.location, book.description)); // re insatitates book objects
     }
  
     saveBooks() {
-        localStorage.setItem('library_books', JSON.stringify(this.books));
+        localStorage.setItem('library_books', JSON.stringify(this.books));  // Saves book array to local storage
     }
 
     randomId() {
-        const randomnumber = crypto.randomUUID().substring(0, 12);
+        const randomnumber = crypto.randomUUID().substring(0, 12);  //Creates a 12 digit random id
         console.log(randomnumber)
-        let existingBook = this.findBookById(randomnumber);
-        if (existingBook) {return this.randomId()}
+        let existingBook = this.findBookById(randomnumber);  
+        if (existingBook) {return this.randomId()}  // Recursively creates a new id if by chance the id already exists, unlikely.
             return randomnumber;
     }
 
-    // addBook takes a book object from the controller and adds it to the books array, then saves the books to local storage.
+    // addBook takes a book object from the controller and adds it to the books array, then saves the books to local storage. 
     addBook(book) {
         if (!book || !book.ISBN || !book.bookId) {
             console.log("Book is undefined");
@@ -67,9 +67,10 @@ class CatalogueModel {
         }
     } 
 
+    // The levinstein distance algorithm is a 2d matrix that compares a "cost" of changeing one word into another
+    // doing this by adding subtracting or subsituting a letter from the search term to match the target word.
+    // this algorithm is from https://www.30secondsofcode.org/js/s/levenshtein-distance/ and 
     calculateLevenshteinDistance(searchTerm, bookIdentifier) {
-
-        // Levenstein distance algorithm 
         const searchTermLength = searchTerm.length;
         const bookIdentifierLength = bookIdentifier.length;
 
