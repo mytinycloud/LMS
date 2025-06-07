@@ -17,9 +17,7 @@ class CatalogueController {
 
         if (document.getElementById("edit-book-form")) {
             document.getElementById('edit-book-form').addEventListener('submit', this.handleEditBook.bind(this));
-        };
-        
-        
+        };op0;[-]
     }
 
     // handle add-book-form input and creates a new book to send to model.addBook()
@@ -50,7 +48,7 @@ class CatalogueController {
         this.addEventListenersToButtons();  // Re-add event listeners as the table has been refreshed
     }
 
-    // 
+    // handle book edits from edit-book-form using user input from set
     handleEditBook(event) {
         event.preventDefault();
         const editForm = document.getElementById('edit-book-form');
