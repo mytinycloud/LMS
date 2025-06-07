@@ -12,8 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     new CatalogueController(window.CatalogueModel, catalogueView);
     window.RecordsController = new RecordsController(window.RecordsModel, window.RecordsView);
 
+
+    // Creates a dynaimc update of profile link and notifications giving real time overdue notifications. 
     const initialLoggedInUser = window.UserModel.getLoggedInUser();
-    const min = 0.1; // 1 minute interval
+    const sec = 10; // 10s interval
     if (initialLoggedInUser) {
         window.UserView.updateProfileLink(initialLoggedInUser);
         setInterval(() => {
@@ -23,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 window.RecordsView.updateNotifications(window.RecordsModel.getCurrentUserRecords());
                 window.RecordsController.addEventListenersToButtons();
             }
-        },(60 * min) * 1000);
+        },sec * 1000);
     }
 });
 

@@ -161,6 +161,7 @@ const users = [
   ),
 ];
 
+// Prepopulate users
 let localusers = localStorage.getItem('users')
 if (!localusers) {
   localStorage.setItem('users', JSON.stringify(users));

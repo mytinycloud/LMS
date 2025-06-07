@@ -6,37 +6,30 @@ class UserView {
 
     showForm(modalId) {
         const modal = document.getElementById(modalId);
+        modal.style.display = "block";
         
-        if (modal) {
-            modal.style.display = "block";
-        } else {
-            console.error(`Modal with ID ${modalId} not found`);
-        }
     }
 
     hideForm(modalId) {
         const modal = document.getElementById(modalId);
-        if (modal) {
-            modal.style.display = "none";
-        }
+        modal.style.display = "none";
     }
+
+    // updateProfileLink creates a profile link when a user logs in ready to borrow books. 
     updateProfileLink(user) {
         const loggedInUser = user;
         const profileLink = document.getElementById('profileLink');
-        
         if (user) {
             profileLink.style.display = "flex";
             let imgSrc
 
             const overdueCount = window.RecordsModel.checkOverdue().length; // Get the count of overdue books
-            const notifyBellSrc = overdueCount > 0 ? "../assets/notification-Red.png" : "../assets/notification-empty.png";
+            const notifyBellSrc = overdueCount > 0 ? "../.assets/notification-Red.png" : "../.assets/notification-empty.png";
             if (loggedInUser.userName === "Hadley Clark") { 
-                imgSrc = "../assets/easteregg.jpg"
+                imgSrc = "../.assets/easteregg.jpg"
             }else{
-                imgSrc = "../assets/user.png"
+                imgSrc = "../.assets/user.png"
             }
-        
-
             profileLink.innerHTML = `
                 <div class="notify-icon-container">
                     <img class="notify-bell ${overdueCount > 0 ? "notify-belljiggle" : ""}" src="${notifyBellSrc}" alt="Notifications">
@@ -45,7 +38,6 @@ class UserView {
                 
                 <span>${loggedInUser.userName}</span>
                 <img class="profileimg" src=${imgSrc} alt="Profile Picture">
-                
             `;
         } else {
             if (profileLink) {
@@ -69,7 +61,6 @@ class UserView {
 
     updateUserTable(users) {
         if (!this.userTableBody) {
-            console.log("Element not found");
             return;
         }
         this.userTableBody.innerHTML = "";
@@ -85,8 +76,8 @@ class UserView {
                 <td>${user.email}</td>
                 <td>${user.role}</td>
                 <td class="btn-group">
-                    <button class="edit-btn" data-user-id="${user.userId}"><img class="btnimg" src="../assets/Edit.png"></button>
-                    <button class="delete-btn" data-user-id="${user.userId}"><img class="btnimg" src="../assets/Delete.png"></button>
+                    <button class="edit-btn" data-user-id="${user.userId}"><img class="btnimg" src="../.assets/Edit.png"></button>
+                    <button class="delete-btn" data-user-id="${user.userId}"><img class="btnimg" src="../.assets/Delete.png"></button>
                     <button class="login-btn" data-user-id="${user.userId}">Login</button>
                 </td>
             `;

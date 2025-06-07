@@ -21,6 +21,7 @@ class CatalogueView {
         }
     }
     
+    // Sets a placeholder of the existing book information 
     setplaceholder(book, modalId) {
         if (!book) {
             console.error("Book data not found in setplaceholder.");
@@ -49,30 +50,31 @@ class CatalogueView {
         if (descriptionField) descriptionField.value = book.description || "";
     }
 
-
+    // creates a table of book with buttons for user interaction. 
     updateBookTable(books) {
         if (!this.bookTableBody) {
             console.log("Element not found");
             return;
         }
-        this.bookTableBody.innerHTML = "";
+        this.bookTableBody.innerHTML = "";  // Clears innerHTML
+
         if (books.length === 0) {
             const empty = document.createElement("tr")
-            empty.innerHTML = "<td colspan='5'>No books found</td>";
+            empty.innerHTML = "<td colspan='5'>No books found</td>";  // Creates a line denoting "no books"
             this.bookTableBody.appendChild(empty)
         }else{
             books.forEach(book => {
-                const row = document.createElement("tr");
+                const row = document.createElement("tr");  // Creates list of books
                 row.innerHTML = `
                     <td>${book.title}</td>
                     <td>${book.author}</td>
                     <td>${book.genre}</td>
                     <td>${book.availability ? "Available" : "Unavailable"}</td>   
                     <td class="btn-group">
-                        <button class="view-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/View.png" ></button>
-                        <button class="edit-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Edit.png"></button>
-                        <button class="borrow-btn ${book.availability ? 'borrow-available' : 'borrow-unavailable'}" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Borrow.png"></button>
-                        <button class="delete-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../assets/Delete.png"></button>
+                        <button class="view-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../.assets/View.png" ></button>
+                        <button class="edit-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../.assets/Edit.png"></button>
+                        <button class="borrow-btn ${book.availability ? 'borrow-available' : 'borrow-unavailable'}" data-book-id="${book.bookId}"><img class="btnimg" src="../.assets/Borrow.png"></button>
+                        <button class="delete-btn" data-book-id="${book.bookId}"><img class="btnimg" src="../.assets/Delete.png"></button>
                     </td>
 
                 `;

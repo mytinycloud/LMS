@@ -951,7 +951,7 @@ const books = [
   )
 ];
 
-
+// Prepopulate Books
 let localbooks = localStorage.getItem('library_books')
 if (!localbooks) {
   console.log("books not loaded")

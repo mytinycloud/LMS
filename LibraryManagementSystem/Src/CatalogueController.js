@@ -17,7 +17,7 @@ class CatalogueController {
 
         if (document.getElementById("edit-book-form")) {
             document.getElementById('edit-book-form').addEventListener('submit', this.handleEditBook.bind(this));
-        };op0;[-]
+        };
     }
 
     // handle add-book-form input and creates a new book to send to model.addBook()

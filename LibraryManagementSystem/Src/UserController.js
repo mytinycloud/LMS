@@ -25,6 +25,7 @@ class UserManagementController{
         
     }
 
+    // handle add-user-form input and creates a new user to send to model.adduser()
     handleAddUser(event) {
         event.preventDefault();
 
@@ -47,7 +48,8 @@ class UserManagementController{
         this.view.updateUserTable(this.model.getUsers());
         this.addEventListenersToButtons();  // Re-add event listeners as the table has been refreshed
         }
-
+    
+    // handle user edits from edit-user-form using user input from view.setplaceholder
     handleEditUser(event) {
         event.preventDefault();
         const editForm = document.getElementById('edit-user-form');

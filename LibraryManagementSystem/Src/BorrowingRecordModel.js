@@ -5,21 +5,22 @@ class RecordsModel {
 
     // Loads  all Records from local storage
     loadRecords() {
-    const recordJSON = localStorage.getItem('records');
-    const record = recordJSON ? JSON.parse(recordJSON) : [];
-        return record.map(record => new BorrowingRecord(
-            record.recordId, 
-            record.borrowedBook, 
-            record.borrower, 
-            new Date(record.borrowDate), 
-            new Date(record.dueDate), 
-            record.returnDate ? new Date(record.returnDate) : null, 
-            record.status
+        try{
+            const recordJSON = localStorage.getItem('records');
+            const record = recordJSON ? JSON.parse(recordJSON) : [];
+            return record.map(record => new BorrowingRecord(record.recordId, record.borrowedBook, record.borrower, new Date(record.borrowDate), new Date(record.dueDate), record.returnDate ? new Date(record.returnDate) : null, record.status
         ));
+        } catch (error) {
+            alert(`Error loading records to local storage.\nError: ${error}`)
+        }
     } 
  
     saveRecords() {
+        try{
         localStorage.setItem('records', JSON.stringify(this.allRecords));
+        } catch (error) {
+            alert (`Error saving records to local storage.\nError: ${error}`)
+        }
     }
 
     createRecord(borrowedBook, borrower) {
@@ -41,7 +42,6 @@ class RecordsModel {
         const record = new BorrowingRecord(recordId, borrowedBook, borrower, borrowDate, dueDate, returnDate, status);
         this.allRecords.push(record);
         this.saveRecords();
-        console.log(`Record created: ${record}`);
     }
     // Checks overdue books each default set for midnight duedate
     checkOverdue() {
@@ -63,10 +63,10 @@ class RecordsModel {
         if (!currentUser) {
             return [];
         }
-        return this.allRecords.filter(record => record.borrower.userId === currentUser.userId);
-        
+        return this.allRecords.filter(record => record.borrower.userId === currentUser.userId);   
     }
-}
+};
+
 class BorrowingRecord {
     constructor(recordId, borrowedBook, borrower, borrowDate, dueDate, returnDate, status) {
         this.recordId = recordId;

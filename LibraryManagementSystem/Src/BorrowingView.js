@@ -1,18 +1,11 @@
 class RecordsView {
     constructor() {
         this.notifications = document.querySelector('#notifications');
-        if (!this.notifications) {
-            console.warn('Notifications wont load on this page')
-        }
         window.RecordsView = this;
     }
     // updates Div sections on the profile page where it sorts over due to the top and returned records to the bottom, 
     // it then displays a different div for each respective record type.
     updateNotifications(borrowingRecords) {
-        if (!this.notifications) {
-            console.log("Element not found");
-            return;
-        }
 
         this.notifications.innerHTML = "";
 
@@ -50,7 +43,7 @@ class RecordsView {
 
         });
         
-        // Display records by there status
+        // Display records by there status.
         sortedRecords.forEach(record => {
             const row = document.createElement("div");
             row.className = "notification";

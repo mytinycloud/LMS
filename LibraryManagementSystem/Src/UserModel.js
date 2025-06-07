@@ -5,17 +5,29 @@ class UserManagement {
     }
     
     loadUsers() {
-        const userJSON = localStorage.getItem('users');
-        const user = userJSON ? JSON.parse(userJSON) : [];
-        return user.map(user => new User(user.userId, user.userName, user.email, user.password, user.role, user.borrowedBooks));
+        try{
+            const userJSON = localStorage.getItem('users');
+            const user = userJSON ? JSON.parse(userJSON) : [];
+            return user.map(user => new User(user.userId, user.userName, user.email, user.password, user.role, user.borrowedBooks));
+        } catch { 
+            alert(`Error Loading from localStorage: ${error}`);
+        }
     } 
  
     saveUsers() {
-        localStorage.setItem('users', JSON.stringify(this.allUsers));
+        try{
+            localStorage.setItem('users', JSON.stringify(this.allUsers));
+        } catch { 
+            alert(`Error saving to localStorage: ${error}`);
+        }
     }
 
     saveLoggedInUser(user) {
-        localStorage.setItem('currentUser', JSON.stringify(user || null));
+        try{
+            localStorage.setItem('currentUser', JSON.stringify(user || null));
+        } catch {
+            alert(`Error saving currentUser in localStorage: ${error}`);
+        }
     }
 
     loadLoggedInUser() {
@@ -26,7 +38,6 @@ class UserManagement {
                 const parsed = JSON.parse(userJSON);
                 if (parsed !== null) {
                     user = parsed;
-                    
                 }
             }
         } catch (error) {
@@ -37,7 +48,6 @@ class UserManagement {
             return null;
         }
         return user = new User(user.userId, user.userName, user.email, user.password, user.role, user.borrowedBooks);
-        
     }
 
     randomId() {
@@ -51,7 +61,7 @@ class UserManagement {
     addUser(user) {
         const existingEmail = this.findUserByEmail(user.email);
         if (existingEmail) {
-            console.warn("User already exists");
+            alert("User email already exists");
             return;
         }
         let userId = this.randomId() 
@@ -59,14 +69,11 @@ class UserManagement {
         let newUser = new User(userId, user.userName, user.email, user.password, user.role, borrowedBooks);
         this.allUsers.push(newUser);
         this.saveUsers();
+        alert(`user ${user.userName} was added successfully.`)
     }
           
     editUser(userID, updates) {
         let user = this.findUserById(userID);
-        if (!user) {
-            console.log(`UserId ${userID} not found. Could not update user.`);
-            return;
-        }
         Object.assign(user, updates);
         this.saveUsers();
     }
@@ -76,7 +83,7 @@ class UserManagement {
         let removedUser = user.userName;
         this.allUsers = this.allUsers.filter(user => user.userId !== userId);
         this.saveUsers();
-        console.log(`"${removedUser}" was removed.`);
+        alert(`user ${removedUser} was removed.`);
         
     }
 
@@ -84,7 +91,6 @@ class UserManagement {
         user.borrowedBooks.push(book);
         this.saveUsers();
         this.saveLoggedInUser(user);
-        console.log("borrowed books: ", user.borrowedBooks)
     
     }
     returnBook(bookId) {
@@ -95,7 +101,11 @@ class UserManagement {
         window.UserView.updateProfileLink(user);
     }
 
-    // levenshtein distance algorithm 
+    // The levinstein distance algorithm is a 2d matrix that compares a "cost" of changeing one word into another
+    // doing this by adding subtracting or subsituting a letter from the search term to match the target word.
+    // this algorithm is from https://www.30secondsofcode.org/js/s/levenshtein-distance/ except the variables have been made more verbose for understanding. 
+
+    // this should be in another file and used between user and catalogue instead of copy and pasted. 
     calculateLevenshteinDistance(searchTerm, bookIdentifier) {
 
         const searchTermLength = searchTerm.length;
@@ -132,6 +142,7 @@ class UserManagement {
         return distanceMatrix[searchTermLength][bookIdentifierLength];
     }
 
+    // Same as the the catalouge search, probably also could have been one generic search with enough thought. 
     searchUsers(query) {
         const fuzinessness = 3
         const queryWords = String(query).toLowerCase().replace(/[^\w\s]/g, '').trim().split(/\s+/)
@@ -180,9 +191,6 @@ class UserManagement {
         let user =  this.allUsers.find(user => user.userId === query);
         if (user) {
             return user;
-        } else {
-            console.log(`User with ID ${query} not found.`);
-            return false;
         }
     }
 
@@ -190,9 +198,6 @@ class UserManagement {
         let user = this.allUsers.find(user => user.email === query);
         if (user) {
             return user;
-        } else {
-            console.log(`User with email ${query} not found.`);
-            return false;
         }
     }
 
