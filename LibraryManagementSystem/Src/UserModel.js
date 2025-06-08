@@ -41,10 +41,9 @@ class UserManagement {
                 }
             }
         } catch (error) {
-            console.error("Error parsing currentUser from localStorage:", error);
+            alert("Error parsing currentUser from localStorage:", error);
         }
         if (!user) {
-            console.log("No user is currently logged in.");
             return null;
         }
         return user = new User(user.userId, user.userName, user.email, user.password, user.role, user.borrowedBooks);
@@ -52,7 +51,6 @@ class UserManagement {
 
     randomId() {
         const randomnumber = crypto.randomUUID().substring(0, 8);
-        console.log(randomnumber)
         let existingIds = this.findUserById(randomnumber);
         if (existingIds) {return this.randomId()}
             return randomnumber;

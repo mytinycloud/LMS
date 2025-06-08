@@ -1,6 +1,9 @@
 
 # BCDE102 Intro to Software 
 
+
+ * run index.html from ../LibraryManagementSystem/HTML/ in a live server. 
+ 
 #### Basic Navigation
 
 * The site should present a main interface with options to navigate to different sections like "Catalogue," "Users," or "Records."

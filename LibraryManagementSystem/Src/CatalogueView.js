@@ -53,7 +53,6 @@ class CatalogueView {
     // creates a table of book with buttons for user interaction. 
     updateBookTable(books) {
         if (!this.bookTableBody) {
-            console.log("Element not found");
             return;
         }
         this.bookTableBody.innerHTML = "";  // Clears innerHTML
